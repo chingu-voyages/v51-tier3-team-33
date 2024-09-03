@@ -35,7 +35,7 @@ your repo access and to practice PR'ing with your team _before_ you start
 coding!
 
 - José Bonilla: [GitHub](https://github.com/jy-bonilla) / [LinkedIn](https://linkedin.com/in/bonillacodes)
-- Teammate name #2: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Dylan Mullarkey: [GitHub](https://github.com/dylanmullarkey) / [LinkedIn](https://www.linkedin.com/in/dylanmullarkey/)
   ...
 
 - Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
