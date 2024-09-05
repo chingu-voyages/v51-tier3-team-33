@@ -40,6 +40,7 @@ coding!
 - Dylan Mullarkey: [GitHub](https://github.com/dylanmullarkey) / [LinkedIn](https://linkedin.com/in/dylanmullarkey)
 - Jack Weru Kioni: [GitHub](https://github.com/Jaweki) / [LinkedIn](https://linkedin.com/in/jaweki-dekut)
 - Olga Yudkin: [GitHub](https://github.com/cvtqx) / [LinkedIn](https://www.linkedin.com/in/olga-yudkin/)
+- Gary Smith: [GitHub](https://github.com/garysmith1933) / [LinkedIn](https://www.linkedin.com/in/garysmith1933/)
 - Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
 
 ## Getting Started
