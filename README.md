@@ -37,6 +37,5 @@ coding!
 - José Bonilla: [GitHub](https://github.com/jy-bonilla) / [LinkedIn](https://linkedin.com/in/bonillacodes)
 - Dylan Mullarkey: [GitHub](https://github.com/dylanmullarkey) / [LinkedIn](https://www.linkedin.com/in/dylanmullarkey/)
 - Jack Weru Kioni: [GitHub](https://github.com/Jaweki) / [LinkedIn](https://www.linkedin.com/in/jaweki-dekut/)
-  ...
-
+- Radhika G: [GitHub](https://github.com/goldilocks0164) / [LinkedIn](https://www.linkedin.com/in/radhika-godla-81335166)
 - Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
