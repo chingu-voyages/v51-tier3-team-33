@@ -7,9 +7,17 @@ async function dbConnect() {
     return;
   }
 
-  const db = await mongoose.connect(process.env.MONGODB_URI!); // Attempts to connect using URI in .env.local file/
+  try {
+    if (!process.env.MONGODB_URI) {
+      throw new Error('MONGODB_URI environment variable is not set.');
+    }
 
-  connection.isConnected = db.connections[0].readyState; // Tells us if we are connected or not.
+    const db = await mongoose.connect(process.env.MONGODB_URI!); // Attempts to connect using URI in .env.local file.
+    console.log("Mongodb connected")
+    
+  } catch(error) {
+    console.log(error)
+  }
 }
 
 export default dbConnect;
