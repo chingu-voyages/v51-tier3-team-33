@@ -1,10 +1,10 @@
 import { faker }from "@faker-js/faker";
 
 interface User {
-  firstName: String,
-  lastName: String,
-  email: String, 
-  password: String
+  firstName: string,
+  lastName: string,
+  email: string, 
+  password: string
 }
  
 const createFakeUser = () => {
@@ -19,7 +19,7 @@ const createFakeUser = () => {
 export const generateFakeUsers = (length: number) => {
   const users: User[] = [];
 
-  for (let i = 0; i < length - 1; i++) {
+  for (let i = 0; i < length; i++) {
     users.push(createFakeUser());
   }
 
