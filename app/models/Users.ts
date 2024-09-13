@@ -1,7 +1,8 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface User extends Document {
-  name: string,
+  firstName: string,
+  lastName: string
   email: string,
   password: string;
 }
