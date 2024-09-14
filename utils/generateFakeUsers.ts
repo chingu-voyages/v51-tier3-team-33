@@ -12,7 +12,7 @@ const createFakeUser = () => {
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
     email: faker.internet.email(),
-    password: faker.internet.password()
+    password: faker.internet.password({length: 5, memorable: true})
   }
 };
 
