@@ -8,6 +8,7 @@ export const authConfig = {
     async authorized({ auth, request: { nextUrl } }) {
       const isAuthenticated = !!auth?.user; // check if user session exists
       const isLandingPage = nextUrl.pathname === "/";
+      const isDashboard = nextUrl.pathname.startsWith("/dashboard");
       const query = new URLSearchParams(nextUrl.search);
       const intendedURL = query.get("callbackUrl");
       const isLoginPage = nextUrl.pathname.startsWith("/login");
@@ -21,7 +22,7 @@ export const authConfig = {
         intendedURL !== undefined &&
         intendedURL !== null
       ) {
-        if (isAuthenticated) return Response.redirect(new URL(intendedURL));
+        return Response.redirect(new URL(intendedURL));
       }
 
       return true;
