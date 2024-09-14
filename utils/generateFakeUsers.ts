@@ -7,7 +7,7 @@ interface User {
   password: string
 }
  
-const createFakeUser = () => {
+const createFakeUser = () : User => {
   return {
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
