@@ -26,4 +26,6 @@ async function dbConnect() {
   }
 }
 
+dbConnect(); // temporary
+
 export default dbConnect;
