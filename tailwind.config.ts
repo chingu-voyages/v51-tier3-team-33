@@ -9,7 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        green: '#9CBF4D',
+        green: {
+          100: '#cedfa6',
+          300: '#9cbf4d',
+        },
+        pampas: '#f4f3ee',
+        merino: '#f4f1de',
         black: '#1F2024',
       },
     },
