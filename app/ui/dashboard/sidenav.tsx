@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import NavLinks from './navlinks';
+import GroupsList from './groupsList';
+import FriendsList from './friendsList';
 
 
 export default function SideNav(){
@@ -13,6 +15,8 @@ export default function SideNav(){
         <Image src={'/images/logo/app-logo-landscape.png'} alt='Logo' width={250} height={100} />
       </Link>
       <NavLinks />
+      <GroupsList />
+      <FriendsList />
     </div>
   );
 }

@@ -15,10 +15,10 @@ import clsx from 'clsx';
 
 const links = [
   { name: 'Home', href: '/dashboard', icon: HomeIcon },
-  { name: 'Friends', href: '/dashboard', icon: UserPlusIcon },
-  { name: 'Groups', href: '/dashboard', icon: UserGroupIcon },
-  { name: 'Expenses', href: '/dashboard', icon: CurrencyDollarIcon },
-  { name: 'Receipts', href: '/dashboard', icon: ReceiptPercentIcon },
+  { name: 'Friends', href: '/dashboard/friends', icon: UserPlusIcon },
+  { name: 'Groups', href: '/dashboard/groups', icon: UserGroupIcon },
+  { name: 'Expenses', href: '/dashboard/expenses', icon: CurrencyDollarIcon },
+  { name: 'Receipts', href: '/dashboard/receipts', icon: ReceiptPercentIcon },
 ];
 
 export default function NavLinks() {
@@ -34,9 +34,9 @@ export default function NavLinks() {
                     key={link.name}
                     href={link.href}
                     className={clsx(
-                      'flex h-[48px] grow items-center justify-center gap-2 rounded-md p-3 text-sm font-medium hover:bg-green-100 md:flex-none md:justify-start md:p-4 md:px-5',
+                      'flex h-[48px] grow items-center justify-center gap-2 rounded-md p-3 hover:font-bold md:flex-none md:justify-start md:p-4 md:px-5',
                       {
-                        'bg-green-100': pathname === 'link.href',
+                        'bg-green-100': pathname === link.href,
                       }
                     )}>
                     <LinkIcon className='w-6 text-green-300' />
