@@ -12,10 +12,16 @@
     "dotenv": "^16.4.5",
     "mongodb": "^6.9.0",
     "mongoose": "^8.6.2",
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.441.0",
     "next": "14.2.8",
-    "path": "^0.12.7",
+    "next-auth": "5.0.0-beta.20",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.0.0",
