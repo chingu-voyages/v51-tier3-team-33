@@ -6,9 +6,12 @@ import Link from "next/link";
 
 const Page = () => {
   return (
-    <div>
+    <div className="h-screen flex flex-col gap-3 items-center justify-center ">
       <Button onClick={() => signIn("google")}> Login with google</Button>
-      <Link href={"/"}> Go to home</Link>
+      <Link href={"/"} className="p-3 bg-white bg-opacity-5 rounded-md">
+        {" "}
+        Dismiss
+      </Link>
     </div>
   );
 };
