@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import React from 'react'
 
@@ -31,10 +32,10 @@ const GroupsList = () => {
   return (
     <div className='flex flex-col items-center justify-between mt-10'>
       <div className='flex gap-4'>
-        <h1 className='text-lg font-semibold text-grey'>Your groups</h1>
-        <button className='px-4 py-2 bg-solitude outline-none text-purple font-semibold rounded-lg hover:bg-purple hover:text-white '>
+        <h1 className='text-lg font-semibold text-grey pt-1'>Your groups</h1>
+        <Button className='bg-solitude outline-none text-purple font-semibold hover:bg-purple hover:text-white'>
           Add Group
-        </button>
+        </Button>
       </div>
       {/* list */}
       <ul className='mt-5'>
