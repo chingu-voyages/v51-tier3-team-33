@@ -14,11 +14,11 @@ import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 
 const links = [
-  { name: 'Home', href: '/dashboard', icon: HomeIcon },
-  { name: 'Friends', href: '/dashboard/friends', icon: UserPlusIcon },
-  { name: 'Groups', href: '/dashboard/groups', icon: UserGroupIcon },
-  { name: 'Expenses', href: '/dashboard/expenses', icon: CurrencyDollarIcon },
-  { name: 'Receipts', href: '/dashboard/receipts', icon: ReceiptPercentIcon },
+  { name: 'Home', href: '/home', icon: HomeIcon },
+  { name: 'Friends', href: '/friends', icon: UserPlusIcon },
+  { name: 'Groups', href: '/groups', icon: UserGroupIcon },
+  { name: 'Expenses', href: '/expenses', icon: CurrencyDollarIcon },
+  { name: 'Receipts', href: '/receipts', icon: ReceiptPercentIcon },
 ];
 
 export default function NavLinks() {
