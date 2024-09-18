@@ -9,18 +9,33 @@
     "lint": "next lint"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@heroicons/react": "^2.1.5",
+=======
+    "dotenv": "^16.4.5",
+    "mongodb": "^6.9.0",
+    "mongoose": "^8.6.2",
+>>>>>>> development
     "@radix-ui/react-slot": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.441.0",
     "next": "14.2.8",
+<<<<<<< HEAD
+=======
+    "next-auth": "5.0.0-beta.20",
+>>>>>>> development
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+<<<<<<< HEAD
+=======
+    "@faker-js/faker": "^9.0.0",
+    "@types/mongoose": "^5.11.97",
+>>>>>>> development
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
