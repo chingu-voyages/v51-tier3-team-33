@@ -5,14 +5,18 @@ import NavLinks from './navlinks';
 import GroupsList from './groupsList';
 import FriendsList from './friendsList';
 
-
-export default function SideNav(){
+export default function SideNav() {
   return (
     <div className='flex h-full flex-col px-3 py-4 md:px-2 bg-merino'>
       <Link
         className='mb-2 flex h-20 items-center justify-center p-4 md:h-40'
         href='/dashboard'>
-        <Image src={'/images/logo/app-logo-landscape.png'} alt='Logo' width={250} height={100} />
+        <Image
+          src={'/images/logo/app-logo-landscape.png'}
+          alt='Logo'
+          width={250}
+          height={100}
+        />
       </Link>
       <NavLinks />
       <GroupsList />
@@ -20,4 +24,3 @@ export default function SideNav(){
     </div>
   );
 }
-
