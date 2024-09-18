@@ -18,7 +18,7 @@ async function dbConnect() {
       throw new Error('MONGODB_URI environment variable is not set.');
     }
 
-    const db = await mongoose.connect(process.env.MONGODB_URI!); // Attempts to connect using URI in .env.local file.
+    await mongoose.connect(process.env.MONGODB_URI!); // Attempts to connect using URI in .env.local file.
     console.log("Mongodb connected")
     
   } catch(error) {
