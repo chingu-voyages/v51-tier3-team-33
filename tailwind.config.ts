@@ -8,18 +8,19 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+  plugins: [],
   	extend: {
   		colors: {
-  			green: {
-  				'100': '#cedfa6',
-  				'300': '#9cbf4d'
-  			},
-  			pampas: '#f4f3ee',
-  			merino: '#f4f1de',
-  			black: '#1F2024',
-  			solitude: '#DEE9FF',
-  			purple: '#7F34CE',
-  			grey: '#888888',
+			green: {
+				100: '#cedfa6',
+				300: '#9cbf4d',
+			  },
+			  pampas: '#f4f3ee',
+			  merino: '#f4f1de',
+			  black: '#1F2024',
+			  solitude: '#DEE9FF',
+			  purple: '#7F34CE',
+			  grey: '#888888',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
