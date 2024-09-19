@@ -5,6 +5,7 @@ export interface User extends Document {
   lastName: string
   email: string,
   password: string;
+  friends: User[]
 }
 
 const userSchema: Schema = new Schema({
@@ -26,7 +27,14 @@ const userSchema: Schema = new Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    }
+  ]
 });
 
 const User = mongoose.model<User>("User", userSchema);
