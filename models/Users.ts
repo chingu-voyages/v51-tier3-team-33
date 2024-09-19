@@ -1,11 +1,11 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface User extends Document {
-  firstName: string,
-  lastName: string
-  email: string,
+  firstName: string;
+  lastName: string;
+  email: string;
   password: string;
-  friends: User[]
+  friends: mongoose.Schema.Types.ObjectId[];
 }
 
 const userSchema: Schema = new Schema({
