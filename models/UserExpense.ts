@@ -1,19 +1,19 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface UserExpense extends Document {
-  user_id: Number,
-  expense_id: Number,
+  user_id: mongoose.Schema.Types.ObjectId;
+  expense_id: mongoose.Schema.Types.ObjectId;
   contribution: Number,
 }
 
 const userExpenseSchema: Schema = new Schema({
   user_id: {
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   },
 
   expense_id: {
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   },
 

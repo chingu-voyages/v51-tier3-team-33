@@ -1,10 +1,10 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface Group extends Document {
-  name: String,
-  description: String,
-  budget: Number,
-  receipt_id: Number,
+  name: String;
+  description: String;
+  budget: Number;
+  admin_id: mongoose.Schema.Types.ObjectId;
 }
 
 const groupSchema: Schema = new Schema({
@@ -25,7 +25,7 @@ const groupSchema: Schema = new Schema({
   },
 
   admin_id: {
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   }
 });

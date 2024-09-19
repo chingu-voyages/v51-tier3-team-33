@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface Receipt extends Document { 
-  image_url: String
+  image_url: String;
 }
 
 const receiptSchema: Schema = new Schema({

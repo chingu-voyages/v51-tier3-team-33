@@ -4,8 +4,8 @@ export interface Expense extends Document {
   name: String,
   description: String,
   amount: Number,
-  receipt_id: Number,
-  category_id: Number
+  receipt_id: mongoose.Schema.Types.ObjectId;
+  // category_id: mongoose.Schema.Types.ObjectId; - Will need to discuss in next meeting.
 }
 
 const expenseSchema: Schema = new Schema({
@@ -19,9 +19,10 @@ const expenseSchema: Schema = new Schema({
     required: true
   },
 
-  // receipt: {    -- Receipt photo. Will come back to this later.
-  //   type: String, 
-  // },
+  receipt: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: false
+  },
 
   amount: {
     type: Number,
