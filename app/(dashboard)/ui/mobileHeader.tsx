@@ -5,6 +5,8 @@ import React from 'react'
 import NavLinks from './navlinks';
 import SearchInput from './searchInput';
 import DropDownMenu from './dropDownMenu';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function MobileHeader(){
     return (
@@ -25,6 +27,16 @@ export default function MobileHeader(){
           <SheetContent
             side='left'
             className='flex flex-col bg-merino'>
+            <Link
+              className='mb-2 flex h-20 items-center justify-center p-4 md:h-40'
+              href='/home'>
+              <Image
+                src={'/images/logo/app-logo-landscape.png'}
+                alt='Logo'
+                width={250}
+                height={100}
+              />
+            </Link>
             <NavLinks />
           </SheetContent>
 
