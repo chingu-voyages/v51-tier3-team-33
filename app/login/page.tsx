@@ -8,7 +8,7 @@ const Page = () => {
   return (
     <div className="h-screen flex flex-col gap-3 items-center justify-center ">
       <Button onClick={() => signIn("google")}> Login with google</Button>
-      <Link href={"/"} className="p-3 bg-white bg-opacity-5 rounded-md">
+      <Link href={"/dashboard"} className="p-3 bg-white bg-opacity-5 rounded-md">
         {" "}
         Dismiss
       </Link>

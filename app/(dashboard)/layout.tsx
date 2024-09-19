@@ -1,4 +1,4 @@
-import MobileHeader from './ui/mobileHeader';
+import MobileHeader from './ui/header';
 import SideNav from './ui/sidenav';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
