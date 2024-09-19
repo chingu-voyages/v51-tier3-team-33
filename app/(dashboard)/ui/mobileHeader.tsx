@@ -4,7 +4,7 @@ import { Menu } from 'lucide-react';
 import React from 'react'
 import NavLinks from './navlinks';
 import SearchInput from './searchInput';
-import DropDownMenu from './dropDownMenu';
+//import DropDownMenu from './dropDownMenu';
 import Link from 'next/link';
 import Image from 'next/image';
 
