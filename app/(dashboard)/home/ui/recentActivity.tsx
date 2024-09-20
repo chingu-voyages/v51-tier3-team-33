@@ -9,9 +9,9 @@ const tags = Array.from({ length: 50 }).map(
 
 export default function RecentActivity() {
     return (
-      <div>
+      <div className='md:flex-1'>
         <h2 className='mb-2'>Recent activity:</h2>
-        <ScrollArea className='h-64 w-full md:w-[250px] rounded-md border bg-muted'>
+        <ScrollArea className='h-64 w-full rounded-md border bg-muted'>
           <div className='p-4'>
             {tags.map((tag) => (
               <>
