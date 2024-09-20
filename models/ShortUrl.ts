@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface ShortUrl extends Document {
-  shortUrl: string;
+  shortUrl: string[];
   actualUrl: string;
   user_id: mongoose.Schema.Types.ObjectId;
   expiration: number;
