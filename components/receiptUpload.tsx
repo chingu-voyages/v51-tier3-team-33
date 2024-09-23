@@ -1,9 +1,11 @@
 "use client"
 import { useState } from "react";
+import { Button } from "./ui/button";
 
 const UploadForm: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -26,8 +28,8 @@ const UploadForm: React.FC = () => {
       })
 
       const data = await response.json();
-      console.log(data.status);
       setUploading(false);
+      setImageUrl(data.storedReceiptUrl);
       
     } catch(error) {
       console.log(error);
@@ -40,11 +42,13 @@ const UploadForm: React.FC = () => {
       <h1>Upload Receipt</h1>
 
       <form onSubmit={handleSubmit}>
-        <input type="file" accept="image/*" onChange={handleFileChange}></input>
-        <button type="submit" disabled={!file || uploading}>
+        <input type="file" accept="image/*" onChange={handleFileChange} capture></input>
+        <Button type="submit" disabled={!file || uploading}>
           {uploading? "Uploading..." : "Upload"}
-        </button>
+        </Button>
       </form>
+
+      {imageUrl ? <img id="receipt-image" src={imageUrl} alt="Uploaded receipt" style={{ height: "300px", width: "450px" }}/> : null}
     </>
   )
 }

@@ -26,7 +26,9 @@ async function uploadFileToS3(fileBuffer: Buffer, fileName: string): Promise<str
   const command = new PutObjectCommand(params);
   await s3Client.send(command);
 
-  return fileName;
+  const storedReceiptUrl = `https://${AWS_S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${fileName}`
+
+  return storedReceiptUrl; // Next step would be to save the url to database
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
@@ -39,9 +41,9 @@ export async function POST(request: Request): Promise<NextResponse> {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer()) // converts the file data into a format readable by S3.
-    const fileName = await uploadFileToS3(buffer, file.name);
+    const storedReceiptUrl = await uploadFileToS3(buffer, file.name);
 
-    return NextResponse.json({success: true, fileName})
+    return NextResponse.json({success: true, storedReceiptUrl})
 
   } catch (error) {
     return NextResponse.json({error: error});
