@@ -42,7 +42,7 @@ const UploadForm: React.FC = () => {
       <h1>Upload Receipt</h1>
 
       <form onSubmit={handleSubmit}>
-        <input type="file" accept="image/*" onChange={handleFileChange} capture></input>
+        <input type="file" accept="image/*" onChange={handleFileChange} capture="environment"></input>
         <Button type="submit" disabled={!file || uploading}>
           {uploading? "Uploading..." : "Upload"}
         </Button>
