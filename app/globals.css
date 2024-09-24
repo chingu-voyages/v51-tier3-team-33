@@ -13,6 +13,8 @@
   --solitude: #DEE9FF;
   --purple: #7F34CE;
   --grey: #888888;
+  --red: #E63946;
+  --pale-red: #f4c1c5;
 }
 
 @media (prefers-color-scheme: dark) {
