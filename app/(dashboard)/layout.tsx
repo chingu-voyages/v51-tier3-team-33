@@ -1,12 +1,18 @@
+import MobileHeader from './ui/header';
 import SideNav from './ui/sidenav';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className='flex h-screen flex-col md:flex-row md:overflow-hidden'>
-      <div className='w-full flex-none md:w-[20rem]'>
+    <div className='grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'>
+      <div className='hidden border-r md:block'>
         <SideNav />
       </div>
-      <div className='flex-grow p-6 md:overflow-y-auto md:p-12'>{children}</div>
+      <div className='flex flex-col'>
+        <MobileHeader />
+        <main className='flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6'>
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

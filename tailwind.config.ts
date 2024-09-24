@@ -21,6 +21,8 @@ const config: Config = {
         solitude: 'var(--solitude)',
         purple: 'var(--purple)',
         grey: 'var(--grey)',
+        red: 'var(--red)',
+        paleRed: 'var(--pale-red)',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
