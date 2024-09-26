@@ -1,32 +1,26 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface User extends Document {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
-  password: string;
+  image: string,
   friends: mongoose.Schema.Types.ObjectId[];
 }
 
 const userSchema: Schema = new Schema({
-  firstName: {
-    type: String,
-    required: true
-  },
-
-  lastName: {
+  name: {
     type: String,
     required: true
   },
 
   email: {
     type: String, 
-    required: true
+    required: true,
+    unique: true
   },
 
-  password: {
+  image: {
     type: String,
-    required: true
   },
 
   friends: [
