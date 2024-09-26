@@ -1,4 +1,6 @@
 import type { NextAuthConfig } from "next-auth";
+import dbConnect from "./lib/dbConnect";
+import User from "./models/Users";
 
 export const authConfig = {
   pages: {
@@ -28,12 +30,39 @@ export const authConfig = {
       return true;
     },
     async signIn({ account, profile }): Promise<any> {
+      
       if (account?.provider === "google") {
-        if (profile?.email_verified) {
-          return true;
+        if (!profile?.email_verified) {
+          return false;
         }
       }
-      return false;
+
+      try {
+        await dbConnect();
+
+        const userExists = await User.findOne({email: profile?.email});
+
+        if (!userExists) {
+          const user = await User.create({
+            firstName: profile?.given_name,
+            lastName: profile?.family_name,
+            email: profile?.email,
+            image: profile?.picture
+          })
+
+          console.log(user);
+        }
+
+        else {
+          console.log("User already exists", userExists);
+        }
+
+        return true;
+
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
     },
   },
   providers: [],
