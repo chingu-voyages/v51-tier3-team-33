@@ -1,10 +1,11 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface User extends Document {
-  firstName: string,
-  lastName: string
-  email: string,
-  password: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  image: string;
+  friends: mongoose.Schema.Types.ObjectId[];
 }
 
 const userSchema: Schema = new Schema({
@@ -20,15 +21,23 @@ const userSchema: Schema = new Schema({
 
   email: {
     type: String, 
-    required: true
+    required: true,
+    unique: true
   },
 
-  password: {
+  image: {
     type: String,
-    required: true
-  }
+  },
+
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    }
+  ]
 });
 
-const User = mongoose.model<User>("User", userSchema);
+const User = mongoose.models?.User || mongoose.model<User>("User", userSchema);
 
 export default User;

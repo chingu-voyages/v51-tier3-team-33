@@ -5,6 +5,7 @@ interface User {
   lastName: string,
   email: string, 
   password: string
+  friends: string[]
 }
  
 const createFakeUser = () : User => {
@@ -12,7 +13,8 @@ const createFakeUser = () : User => {
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
     email: faker.internet.email(),
-    password: faker.internet.password({length: 5, memorable: true})
+    password: faker.internet.password({length: 5, memorable: true}),
+    friends: []
   }
 };
 
