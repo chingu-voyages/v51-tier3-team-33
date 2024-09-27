@@ -5,6 +5,7 @@ export interface Expense extends Document {
   description: String,
   amount: Number,
   receipt_id: mongoose.Schema.Types.ObjectId;
+  date: Date
 }
 
 const expenseSchema: Schema = new Schema({
@@ -27,6 +28,11 @@ const expenseSchema: Schema = new Schema({
     type: Number,
     required: true,
     default: 0
+  },
+
+  date: {
+    type: Date,
+    default:Date.now
   }
 });
 
