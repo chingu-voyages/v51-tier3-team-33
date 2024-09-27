@@ -17,14 +17,11 @@ export const authConfig = {
 
       if (isLandingPage) return true;
 
-      if (!isAuthenticated) {
+      if (isDashboard) {
+        if (isAuthenticated) return true;
         return false;
-      } else if (
-        isLoginPage &&
-        intendedURL !== undefined &&
-        intendedURL !== null
-      ) {
-        return Response.redirect(new URL(intendedURL));
+      } else if (isLoginPage && intendedURL) {
+        if (isAuthenticated) return Response.redirect(new URL(intendedURL));
       }
 
       return true;
