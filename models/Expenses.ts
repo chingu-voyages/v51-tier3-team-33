@@ -5,7 +5,6 @@ export interface Expense extends Document {
   description: String,
   amount: Number,
   receipt_id: mongoose.Schema.Types.ObjectId;
-  // category_id: mongoose.Schema.Types.ObjectId; - Will need to discuss in next meeting.
 }
 
 const expenseSchema: Schema = new Schema({
@@ -31,6 +30,6 @@ const expenseSchema: Schema = new Schema({
   }
 });
 
-const Expense = mongoose.model<Expense>("Expense", expenseSchema);
+const Expense = mongoose.models?.expense || mongoose.model<Expense>("Expense", expenseSchema);
 
 export default Expense;

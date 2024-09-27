@@ -5,6 +5,8 @@ import Image from "next/image";
 const ProtectedPage = () => {
   const { data } = useSession();
 
+  console.log(data?.user)
+
   return (
     <div className="h-screen flex flex-col items-center justify-center gap-3">
       This is a Protected route
