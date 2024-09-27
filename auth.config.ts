@@ -29,6 +29,19 @@ export const authConfig = {
 
       return true;
     },
+
+    async session({ session }): Promise<any> {
+      try {
+        const sessionUser = await User.findOne({email: session.user.email});
+        session.user.id = sessionUser.id; // gives the session the user id from the database
+
+      } catch (error) {
+        console.log(error)
+      }
+      
+      return session;
+    },
+
     async signIn({ account, profile }): Promise<any> {
       
       if (account?.provider === "google") {
@@ -39,7 +52,6 @@ export const authConfig = {
 
       try {
         await dbConnect();
-
         const userExists = await User.findOne({email: profile?.email});
 
         if (!userExists) {
