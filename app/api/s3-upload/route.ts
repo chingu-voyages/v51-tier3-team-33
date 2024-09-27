@@ -43,7 +43,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     const buffer = Buffer.from(await file.arrayBuffer()) // converts the file data into a format readable by S3.
     const storedReceiptUrl = await uploadFileToS3(buffer, file.name);
 
-    return NextResponse.json({success: true, storedReceiptUrl})
+    return NextResponse.json({success: true, storedReceiptUrl});
 
   } catch (error) {
     return NextResponse.json({error: error});

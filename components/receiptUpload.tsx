@@ -25,7 +25,7 @@ const UploadForm: React.FC = () => {
       const response = await fetch('/api/s3-upload', {
         method: "POST",
         body: formData
-      })
+      });
 
       const data = await response.json();
       setUploading(false);
