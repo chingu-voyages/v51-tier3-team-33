@@ -4,11 +4,22 @@ import { ObjectId } from "mongoose";
 import dbConnect from "@/lib/dbConnect";
 import UserGroup from "@/models/UserGroup";
 
+export const GET = async(): Promise<NextResponse> => {
+  try {
+    await dbConnect();
+    const groups = await Group.find();
+    return NextResponse.json({success: true, groups}, {status: 200});
+
+  } catch (error) {
+    return NextResponse.json({error: error})
+  }
+}
+
 interface GroupBody {
   name: string,
   description: string,
   budget: number,
-  user_id: ObjectId | string // its possibly just a string at this point
+  user_id: ObjectId | string
 }
 
 export const POST = async(request: NextRequest): Promise<NextResponse> => {

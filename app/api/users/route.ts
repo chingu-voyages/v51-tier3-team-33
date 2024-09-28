@@ -6,7 +6,6 @@ export const GET = async(): Promise<NextResponse> => {
   try {
     await dbConnect();
     const users = await User.find();
-    console.log(users);
     return NextResponse.json({success: true, users});
 
   } catch(error) {
