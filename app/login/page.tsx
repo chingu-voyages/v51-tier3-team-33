@@ -16,12 +16,12 @@ const Page = () => {
         width={393}
         height={476}
       />
-      <div className="flex flex-col gap-3 items-center">
+      <div className="flex flex-col gap-3 items-center mt-20">
         <h1 className="text-4xl font-bold text-[#57893C]">
           Welcome!
         </h1>
         <Button
-          className="bg-[#57893C] w-60"
+          className="bg-[#57893C] w-80"
           onClick={() =>
             signIn("google")
           }
@@ -37,6 +37,12 @@ const Page = () => {
           Continue as a guest
         </Link>
       </div>
+      <h3 className="mt-auto mb-5 font-medium text-base text-[#71727A]">
+        Not a member?{" "}
+        <span className="text-[#57893C]">
+          Register now
+        </span>
+      </h3>
     </div>
   );
 };
