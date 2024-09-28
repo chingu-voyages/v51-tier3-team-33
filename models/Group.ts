@@ -6,6 +6,7 @@ export interface IGroup extends Document {
   budget: number;
   admin_id: mongoose.Schema.Types.ObjectId;
   members: mongoose.Schema.Types.ObjectId[];
+  expenses: mongoose.Schema.Types.ObjectId[];
 }
 
 const groupSchema: Schema = new Schema({
@@ -32,6 +33,14 @@ const groupSchema: Schema = new Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true
+    }
+  ],
+
+  expenses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Expense",
+      default: []
     }
   ]
 });
