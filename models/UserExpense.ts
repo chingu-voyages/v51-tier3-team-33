@@ -1,6 +1,6 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, Model } from 'mongoose';
 
-export interface UserExpense extends Document {
+export interface IUserExpense extends Document {
   user_id: mongoose.Schema.Types.ObjectId;
   expense_id: mongoose.Schema.Types.ObjectId;
   contribution: Number,
@@ -24,6 +24,6 @@ const userExpenseSchema: Schema = new Schema({
   }
 });
 
-const UserExpense = mongoose.model<UserExpense>("UserExpense", userExpenseSchema);
+const UserExpense: Model<IUserExpense> = mongoose.models.UserExpense || mongoose.model<IUserExpense>("UserExpense", userExpenseSchema);
 
 export default UserExpense;

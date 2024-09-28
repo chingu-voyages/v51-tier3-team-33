@@ -41,15 +41,14 @@ export const authConfig = {
     },
 
     async signIn({ account, profile }): Promise<any> {
-      
-      if (account?.provider === "google") {
-        if (!profile?.email_verified) {
-          return false;
-        }
-      }
-
       try {
         await dbConnect();
+
+        if (account?.provider === "google") {
+          if (!profile?.email_verified) {
+            return false;
+          }
+        }
         const userExists = await User.findOne({email: profile?.email});
 
         if (!userExists) {

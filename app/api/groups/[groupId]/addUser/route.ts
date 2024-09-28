@@ -8,7 +8,7 @@ export const POST = async(request: NextRequest, { params }: { params: { groupId:
     await dbConnect();
 
     const { groupId } = params;
-    const { user_id } = await request.json();
+    const { user_id } = await request.json(); //need to handle case where user_id is invalid
 
     const group = await Group.findByIdAndUpdate(groupId,
       { $addToSet: {members: user_id} }, // add to set prevent duplicates from being added.
