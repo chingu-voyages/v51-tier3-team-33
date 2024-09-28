@@ -1,6 +1,7 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import { Receipt } from 'lucide-react';
+import mongoose, { Document, Schema, Model } from 'mongoose';
 
-export interface Expense extends Document {
+export interface IExpense extends Document {
   name: String,
   description: String,
   amount: Number,
@@ -19,7 +20,7 @@ const expenseSchema: Schema = new Schema({
     required: true
   },
 
-  receipt: {
+  receipt_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: false
   },
@@ -36,6 +37,8 @@ const expenseSchema: Schema = new Schema({
   }
 });
 
-const Expense = mongoose.models?.expense || mongoose.model<Expense>("Expense", expenseSchema);
+expenseSchema.index({ name: 1, description: 1, amount: 1, receipt_id: 1}, { unique: true }); //prevents duplicates entries
+
+const Expense: Model<IExpense> = mongoose.models.expense || mongoose.model<IExpense>("expense", expenseSchema);
 
 export default Expense;
