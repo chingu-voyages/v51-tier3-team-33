@@ -7,10 +7,22 @@ import Link from "next/link";
 const Page = () => {
   return (
     <div className="h-screen flex flex-col gap-3 items-center justify-center ">
-      <Button onClick={() => signIn("google")}> Login with google</Button>
-      <Link href={"/dashboard"} className="p-3 bg-white bg-opacity-5 rounded-md">
+      <h1 className="text-4xl font-bold text-[#57893C]">
+        Welcome!
+      </h1>
+      <Button
+        className="bg-[#57893C]"
+        onClick={() => signIn("google")}
+      >
         {" "}
-        Dismiss
+        Sign in with Google
+      </Button>
+      <Link
+        href={"/home"}
+        className="p-3 bg-white bg-opacity-5 rounded-md font-bold text-[#57893C]"
+      >
+        {" "}
+        Continue as a guest
       </Link>
     </div>
   );
