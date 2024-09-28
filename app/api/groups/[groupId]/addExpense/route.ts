@@ -7,6 +7,7 @@ interface ExpenseBody {
   name: string;
   description: string;
   amount: number;
+  category: string
 }
 
 export const POST = async(request:NextRequest, { params } : { params: { groupId: string } }): Promise<any> => {
@@ -20,6 +21,7 @@ export const POST = async(request:NextRequest, { params } : { params: { groupId:
       name: body.name,
       description: body.description,
       amount: body.amount,
+      category: body.category,
       group_id: groupId
     })
 
