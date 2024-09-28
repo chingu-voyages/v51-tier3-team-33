@@ -1,4 +1,3 @@
-import { Receipt } from 'lucide-react';
 import mongoose, { Document, Schema, Model } from 'mongoose';
 
 export interface IExpense extends Document {
@@ -39,6 +38,6 @@ const expenseSchema: Schema = new Schema({
 
 expenseSchema.index({ name: 1, description: 1, amount: 1, receipt_id: 1}, { unique: true }); //prevents duplicates entries
 
-const Expense: Model<IExpense> = mongoose.models.expense || mongoose.model<IExpense>("expense", expenseSchema);
+const Expense: Model<IExpense> = mongoose.models.Expense || mongoose.model<IExpense>("Expense", expenseSchema);
 
 export default Expense;
