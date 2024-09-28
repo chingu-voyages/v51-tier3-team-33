@@ -7,7 +7,7 @@ import Image from "next/image";
 
 const Page = () => {
   return (
-    <div className="h-dvh  ">
+    <div className="h-dvh flex flex-col items-center ">
       <img
         className="w-dvw"
         src={
@@ -15,7 +15,7 @@ const Page = () => {
         }
         alt="Logo"
       />
-      <div className="flex flex-col gap-3 items-center mt-20">
+      <div className="flex flex-col items-center justify-center mt-10 gap-3">
         <h1 className="text-4xl font-bold text-[#57893C]">
           Welcome!
         </h1>
@@ -37,7 +37,7 @@ const Page = () => {
         </Link>
       </div>
       <Link
-        className="flex justify-center gap-1 font-medium text-base text-[#71727A]"
+        className="mt-auto mb-2 gap-1 font-medium text-base text-[#71727A]"
         href={"/register"}
       >
         Not a member?{" "}
