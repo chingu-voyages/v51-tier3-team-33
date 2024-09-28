@@ -32,6 +32,11 @@ const expenseSchema: Schema = new Schema({
     default: 0
   },
 
+  category: {
+    type: String,
+    required: true,
+  },
+
   date: {
     type: Date,
     default:Date.now
@@ -44,7 +49,7 @@ const expenseSchema: Schema = new Schema({
 
 });
 
-expenseSchema.index({ name: 1, description: 1, amount: 1, receipt_id: 1}, { unique: true }); //prevents duplicates entries
+expenseSchema.index({ name: 1, description: 1, amount: 1, receipt_id: 1, category: 1}, { unique: true }); //prevents duplicates entries
 
 const Expense: Model<IExpense> = mongoose.models.Expense || mongoose.model<IExpense>("Expense", expenseSchema);
 
