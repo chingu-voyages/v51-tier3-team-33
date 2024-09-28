@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import Expense from "@/models/Expenses";
+import UserExpense from "@/models/UserExpense";
 
 interface ExpenseBody {
   name: string;
@@ -8,23 +9,23 @@ interface ExpenseBody {
   amount: number;
 }
 
-export const POST = async(request:NextRequest): Promise<any> => {
+export const POST = async(request:NextRequest, { params } : { params: { groupId: string } }): Promise<any> => {
   try {
     await dbConnect();
 
+    const { groupId } = params;
     const body: ExpenseBody = await request.json();
 
     const expense = await Expense.create({
       name: body.name,
       description: body.description,
-      amount: body.amount 
+      amount: body.amount,
+      group_id: groupId
     })
 
-    //map the expense to the group.
+    //may still need the user_id to verify that one creating the expense is the admin. - ask the group
 
-    // the next step is to add the user id to the body and connect the user(s) to the expense.
-    //it also seems like groups should be a thing first. seems easiest. once you have the group of people in tact, the rest of this should come naturally.
-
+    // need to get members of group and add UserExpense records for them
     return NextResponse.json({ message: 'Expense created successfully', expense }, { status: 201 });
 
   } catch(error) {

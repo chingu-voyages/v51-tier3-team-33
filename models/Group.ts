@@ -27,7 +27,6 @@ const groupSchema: Schema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true
   },
-
   members: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -35,7 +34,6 @@ const groupSchema: Schema = new Schema({
       required: true
     }
   ],
-
   expenses: [
     {
       type: mongoose.Schema.Types.ObjectId,

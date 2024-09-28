@@ -5,7 +5,8 @@ export interface IExpense extends Document {
   description: String,
   amount: Number,
   receipt_id: mongoose.Schema.Types.ObjectId;
-  date: Date
+  date: Date,
+  group_id: mongoose.Schema.Types.ObjectId;
 }
 
 const expenseSchema: Schema = new Schema({
@@ -33,7 +34,13 @@ const expenseSchema: Schema = new Schema({
   date: {
     type: Date,
     default:Date.now
+  },
+
+  group_id: {
+    type:mongoose.Schema.Types.ObjectId,
+    required: true
   }
+
 });
 
 expenseSchema.index({ name: 1, description: 1, amount: 1, receipt_id: 1}, { unique: true }); //prevents duplicates entries
