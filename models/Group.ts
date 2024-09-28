@@ -5,6 +5,7 @@ export interface IGroup extends Document {
   description: string;
   budget: number;
   admin_id: mongoose.Schema.Types.ObjectId;
+  members: mongoose.Schema.Types.ObjectId[];
 }
 
 const groupSchema: Schema = new Schema({
@@ -24,7 +25,15 @@ const groupSchema: Schema = new Schema({
   admin_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
-  }
+  },
+
+  members: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    }
+  ]
 });
 
 const Group: Model<IGroup> = mongoose.models.Group || mongoose.model<IGroup>("Group", groupSchema);

@@ -20,7 +20,8 @@ export const POST = async(request: NextRequest): Promise<NextResponse> => {
       name: body.name,
       description: body.description,
       budget: body.budget,
-      admin_id: body.user_id
+      admin_id: body.user_id,
+      members: [body.user_id]
     });
 
     await UserGroup.create({ //this collection is used to store all the groups is affiliated with
