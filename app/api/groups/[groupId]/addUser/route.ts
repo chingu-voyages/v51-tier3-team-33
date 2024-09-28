@@ -10,8 +10,6 @@ export const POST = async(request: NextRequest, { params }: { params: { groupId:
     const { groupId } = params;
     const { user_id } = await request.json();
 
-    console.log(groupId);
-
     const group = await Group.findByIdAndUpdate(groupId,
       { $addToSet: {members: user_id} }, // add to set prevent duplicates from being added.
       { new: true }).populate("members"); // returns the new verison of the document instead of the old one.

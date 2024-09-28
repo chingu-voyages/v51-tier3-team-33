@@ -31,7 +31,7 @@ export const authConfig = {
       try {
         await dbConnect();
         const sessionUser = await User.findOne({email: session.user.email});
-        session.user.id = sessionUser.id; // gives the session the user id from the database
+        session.user.id = sessionUser?.id; // gives the session the user id from the database
 
       } catch (error) {
         console.log(error)

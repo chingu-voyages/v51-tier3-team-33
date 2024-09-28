@@ -20,6 +20,8 @@ export const POST = async(request:NextRequest): Promise<any> => {
       amount: body.amount 
     })
 
+    //map the expense to the group.
+
     // the next step is to add the user id to the body and connect the user(s) to the expense.
     //it also seems like groups should be a thing first. seems easiest. once you have the group of people in tact, the rest of this should come naturally.
 
