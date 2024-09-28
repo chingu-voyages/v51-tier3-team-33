@@ -1,6 +1,6 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, Model } from 'mongoose';
 
-export interface Group extends Document {
+export interface IGroup extends Document {
   name: String;
   description: String;
   budget: Number;
@@ -30,6 +30,6 @@ const groupSchema: Schema = new Schema({
   }
 });
 
-const Group = mongoose.model<Group>("Group", groupSchema);
+const Group: Model<IGroup> = mongoose.models?.group || mongoose.model<IGroup>("Group", groupSchema);
 
 export default Group;

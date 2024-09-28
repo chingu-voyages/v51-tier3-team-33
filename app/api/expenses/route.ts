@@ -20,10 +20,13 @@ export const POST = async(request:NextRequest): Promise<any> => {
       amount: body.amount 
     })
 
+    // the next step is to add the user id to the body and connect the user(s) to the expense.
+    //it also seems like groups should be a thing first. seems easiest. once you have the group of people in tact, the rest of this should come naturally.
+
     return NextResponse.json({ message: 'Expense created successfully', expense }, { status: 201 });
 
   } catch(error) {
-    
+
     if ((error as any).errorResponse) {
       if ((error as any).errorResponse.code == 11000) {
         return NextResponse.json({error: 'An expense with this info already exists', status: 409 });
