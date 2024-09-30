@@ -22,11 +22,10 @@ const links = [
 ];
 
 export default function NavLinks() {
-    const pathname = usePathname();
-    console.log('Path', pathname)
+  const pathname = usePathname();
     
     return (
-        <>
+        <nav className='mt-5'>
             {links.map((link) => {
                 const LinkIcon = link.icon;
                 return (
@@ -40,11 +39,11 @@ export default function NavLinks() {
                       }
                     )}>
                     <LinkIcon className='w-6 text-green-300' />
-                    <p className='hidden md:block'>{link.name}</p>
+                    <p>{link.name}</p>
                   </Link>
                 );
             })
             }
-        </>
+        </nav>
     )
 }

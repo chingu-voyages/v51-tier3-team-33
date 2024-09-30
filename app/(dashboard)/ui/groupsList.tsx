@@ -30,9 +30,9 @@ const groups = [
 
 const GroupsList = () => {
   return (
-    <div className='flex flex-col items-center justify-between mt-10'>
-      <div className='flex gap-4'>
-        <h1 className='text-lg font-semibold text-grey pt-1'>Your groups</h1>
+    <div className='flex flex-col items-center justify-between mt-10 ml-2'>
+      <div className='flex grow gap-4 items-center justify-center'>
+        <h1 className='text-lg font-semibold text-grey'>Your groups</h1>
         <Button className='bg-solitude outline-none text-purple font-semibold hover:bg-purple hover:text-white'>
           Add Group
         </Button>
@@ -43,7 +43,7 @@ const GroupsList = () => {
           return (
             <li
               key={group.id}
-              className='flex items-center gap-4 p-2 hover:bg-green-100 rounded-lg cursor-pointer w-64'>
+              className=' flex h-[48px] w-64 grow items-center gap-2 rounded-md hover:font-bold p-4 px-5'>
               <Image
                 src={group.imageUrl}
                 alt='Group Avatar'
