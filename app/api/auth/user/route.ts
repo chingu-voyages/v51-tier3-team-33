@@ -2,23 +2,29 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import User from "@/models/Users";
 
+interface ProfileBody {
+  firstName: string;
+  lastName: string;
+  email: string;
+  image: string | undefined;
+}
 export const POST = async(request: NextRequest) => {
   try {
     await dbConnect();
-    const body = await request.json();
+    const body: ProfileBody = await request.json();
 
     if (!body.email) {
-      return NextResponse.json({message: "Email is missing"}, {status:400})
+      return NextResponse.json({message: "Email is missing"}, {status:400});
     }
 
-    await User.create({
-        firstName: body?.given_name,
-        lastName: body?.family_name,
+    const user = await User.create({
+        firstName: body?.firstName,
+        lastName: body?.lastName,
         email: body?.email,
-        image: body?.picture
+        image: body?.image
     })
 
-    return NextResponse.json({message: "User successfully created"}, {status: 201});
+    return NextResponse.json({message: "User successfully created", user}, {status: 201});
 
   } catch ( error ) {
     return NextResponse.json({error: error})

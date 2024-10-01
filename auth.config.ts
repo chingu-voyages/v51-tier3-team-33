@@ -1,6 +1,4 @@
 import type { NextAuthConfig } from "next-auth";
-import dbConnect from "./lib/dbConnect";
-import User from "./models/Users";
 
 export const authConfig = {
   pages: {
@@ -29,14 +27,14 @@ export const authConfig = {
 
     async session({ session }): Promise<any> {
       try {
-        const sessionUser = await User.findOne({email: session.user.email});
-        session.user.id = sessionUser.id; // gives the session the user id from the database
-
+        const response = await fetch(`http://localhost:3000/api/auth/user/${session.user.email}`)
+        const userData = await response.json();
+        session.user.id = userData.user._id; // gives the session the user id from the database
+        
+        return session;
       } catch (error) {
         console.log(error)
       }
-      
-      return session;
     },
 
     async signIn({ account, profile }): Promise<any> {
@@ -48,22 +46,27 @@ export const authConfig = {
       }
 
       try {
-        await dbConnect();
-        const userExists = await User.findOne({email: profile?.email});
+        console.log(profile)
+        const response = await fetch(`http://localhost:3000/api/auth/user/${profile?.email}`)
+        const userData = await response.json();
 
-        if (!userExists) {
-          const user = await User.create({
-            firstName: profile?.given_name,
-            lastName: profile?.family_name,
-            email: profile?.email,
-            image: profile?.picture
-          })
-
-          console.log(user);
+        if (userData) {
+          console.log("User already exists", userData)
         }
 
-        else {
-          console.log("User already exists", userExists);
+        else { //add user to database
+          await fetch('./auth/api/user', {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              firstName: profile?.given_name,
+              lastName: profile?.family_name,
+              email: profile?.email,
+              image: profile?.picture
+            })
+          })
         }
 
         return true;
