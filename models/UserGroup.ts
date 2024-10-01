@@ -1,6 +1,6 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, Model } from 'mongoose';
 
-export interface UserGroup extends Document { 
+export interface IUserGroup extends Document { 
   user_id: mongoose.Schema.Types.ObjectId;
   group_id: mongoose.Schema.Types.ObjectId;
   is_admin: Boolean;
@@ -24,6 +24,6 @@ const userGroupSchema: Schema = new Schema({
   }
 });
 
-const UserGroup = mongoose.model<UserGroup>("UserGroup", userGroupSchema);
+const UserGroup: Model<IUserGroup> = mongoose.models?.UserGroup || mongoose.model<IUserGroup>("UserGroup", userGroupSchema);
 
 export default UserGroup;
