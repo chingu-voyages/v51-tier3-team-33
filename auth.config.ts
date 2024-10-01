@@ -27,7 +27,7 @@ export const authConfig = {
 
     async session({ session }): Promise<any> {
       try {
-        const response = await fetch(`http://localhost:3000/api/auth/user/${session.user.email}`)
+        const response = await fetch(`${process.env.BASE_URL}/api/auth/user/${session.user.email}`)
         const userData = await response.json();
         session.user.id = userData.user._id; // gives the session the user id from the database
         
@@ -46,8 +46,7 @@ export const authConfig = {
       }
 
       try {
-        console.log(profile)
-        const response = await fetch(`http://localhost:3000/api/auth/user/${profile?.email}`)
+        const response = await fetch(`${process.env.BASE_URL}/api/auth/user/${profile?.email}`)
         const userData = await response.json();
 
         if (userData) {
@@ -55,7 +54,7 @@ export const authConfig = {
         }
 
         else { //add user to database
-          await fetch('./auth/api/user', {
+          await fetch(`${process.env.BASE_URL}/auth/api/user`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
