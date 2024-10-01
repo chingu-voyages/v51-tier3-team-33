@@ -38,13 +38,6 @@ export const authConfig = {
     },
 
     async signIn({ account, profile }): Promise<any> {
-      
-      if (account?.provider === "google") {
-        if (!profile?.email_verified) {
-          return false;
-        }
-      }
-
       try {
         const response = await fetch(`${process.env.BASE_URL}/api/auth/user/${profile?.email}`)
         const userData = await response.json();

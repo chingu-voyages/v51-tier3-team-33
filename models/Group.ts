@@ -1,10 +1,12 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, Model } from 'mongoose';
 
-export interface Group extends Document {
-  name: String;
-  description: String;
-  budget: Number;
+export interface IGroup extends Document {
+  name: string;
+  description: string;
+  budget: number;
   admin_id: mongoose.Schema.Types.ObjectId;
+  members: mongoose.Schema.Types.ObjectId[];
+  expenses: mongoose.Schema.Types.ObjectId[];
 }
 
 const groupSchema: Schema = new Schema({
@@ -12,24 +14,35 @@ const groupSchema: Schema = new Schema({
     type: String,
     required: true
   },
-
   description: {
     type: String,
     required: true
   },
-
   budget: {
     type: Number,
     required: true,
     default: 0
   },
-
   admin_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
-  }
+  },
+  members: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    }
+  ],
+  expenses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Expense",
+      default: []
+    }
+  ]
 });
 
-const Group = mongoose.model<Group>("Group", groupSchema);
+const Group: Model<IGroup> = mongoose.models.Group || mongoose.model<IGroup>("Group", groupSchema);
 
 export default Group;

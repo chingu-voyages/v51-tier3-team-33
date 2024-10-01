@@ -1,11 +1,13 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, Model } from 'mongoose';
 
-export interface Expense extends Document {
+export interface IExpense extends Document {
   name: String,
   description: String,
   amount: Number,
+  category: String,
   receipt_id: mongoose.Schema.Types.ObjectId;
-  // category_id: mongoose.Schema.Types.ObjectId; - Will need to discuss in next meeting.
+  date: Date,
+  group_id: mongoose.Schema.Types.ObjectId;
 }
 
 const expenseSchema: Schema = new Schema({
@@ -19,7 +21,7 @@ const expenseSchema: Schema = new Schema({
     required: true
   },
 
-  receipt: {
+  receipt_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: false
   },
@@ -28,9 +30,27 @@ const expenseSchema: Schema = new Schema({
     type: Number,
     required: true,
     default: 0
+  },
+
+  category: {
+    type: String,
+    required: true,
+  },
+
+  date: {
+    type: Date,
+    default:Date.now
+  },
+
+  group_id: {
+    type:mongoose.Schema.Types.ObjectId,
+    required: true
   }
+
 });
 
-const Expense = mongoose.model<Expense>("Expense", expenseSchema);
+expenseSchema.index({ name: 1, description: 1, amount: 1, receipt_id: 1, category: 1}, { unique: true }); //prevents duplicates entries
+
+const Expense: Model<IExpense> = mongoose.models.Expense || mongoose.model<IExpense>("Expense", expenseSchema);
 
 export default Expense;
