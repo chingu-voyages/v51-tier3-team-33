@@ -1,3 +1,6 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import React from 'react'
@@ -29,11 +32,16 @@ const groups = [
 ];
 
 const GroupsList = () => {
+  const router = useRouter();
+
   return (
     <div className='flex flex-col items-center justify-between mt-10 ml-2'>
       <div className='flex grow gap-4 items-center justify-center'>
         <h1 className='text-lg font-semibold text-grey'>Your groups</h1>
-        <Button className='bg-solitude outline-none text-purple font-semibold hover:bg-purple hover:text-white'>
+        <Button
+          className='bg-solitude outline-none text-purple font-semibold hover:bg-purple hover:text-white'
+          type='button'
+          onClick={() => router.push('/groups/add')}>
           Add Group
         </Button>
       </div>
