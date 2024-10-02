@@ -1,6 +1,4 @@
 import type { NextAuthConfig } from "next-auth";
-import dbConnect from "./lib/dbConnect";
-import User from "./models/Users";
 
 export const authConfig = {
   pages: {
@@ -29,41 +27,38 @@ export const authConfig = {
 
     async session({ session }): Promise<any> {
       try {
-        await dbConnect();
-        const sessionUser = await User.findOne({email: session.user.email});
-        session.user.id = sessionUser?.id; // gives the session the user id from the database
-
+        const response = await fetch(`${process.env.BASE_URL}/api/auth/user/${session.user.email}`)
+        const userData = await response.json();
+        session.user.id = userData.user._id; // gives the session the user id from the database
+        
+        return session;
       } catch (error) {
         console.log(error)
       }
-      
-      return session;
     },
 
     async signIn({ account, profile }): Promise<any> {
       try {
-        await dbConnect();
+        const response = await fetch(`${process.env.BASE_URL}/api/auth/user/${profile?.email}`)
+        const userData = await response.json();
 
-        if (account?.provider === "google") {
-          if (!profile?.email_verified) {
-            return false;
-          }
+        if (userData) {
+          console.log("User already exists", userData)
         }
-        const userExists = await User.findOne({email: profile?.email});
 
-        if (!userExists) {
-          const user = await User.create({
-            firstName: profile?.given_name,
-            lastName: profile?.family_name,
-            email: profile?.email,
-            image: profile?.picture
+        else { //add user to database
+          await fetch(`${process.env.BASE_URL}/auth/api/user`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              firstName: profile?.given_name,
+              lastName: profile?.family_name,
+              email: profile?.email,
+              image: profile?.picture
+            })
           })
-
-          console.log(user);
-        }
-
-        else {
-          console.log("User already exists", userExists);
         }
 
         return true;
@@ -75,4 +70,5 @@ export const authConfig = {
     },
   },
   providers: [],
+  trustHost: true,
 } satisfies NextAuthConfig;
