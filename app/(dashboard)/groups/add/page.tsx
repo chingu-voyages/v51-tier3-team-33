@@ -1,3 +1,7 @@
+import NewGroupForm from "./ui/addGroupForm";
+
 export default function Page() {
-  return <p>Add group </p>;
+  return (<div>
+    <NewGroupForm />
+  </div>)
 }
