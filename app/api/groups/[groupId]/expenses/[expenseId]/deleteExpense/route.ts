@@ -1,29 +1,53 @@
 import dbConnect from "@/lib/dbConnect";
 import Expense from "@/models/Expenses";
-// import { NextRequest, NextResponse } from "next/server";
+import Group from "@/models/Group";
+import { NextRequest, NextResponse } from "next/server";
+import UserExpense from "@/models/UserExpense";
 
-// export const PUT = async (request: NextRequest, { params }: { params: { groupId: string; expenseId: string } }) => {
+export const DELETE = async (request: NextRequest, { params }: { params: { groupId: string; expenseId: string } }) => {
+  try {
+    await dbConnect();
 
-//   try {
-//     await dbConnect();
+    const {groupId, expenseId} = params;
 
-//     const {groupId, expenseId} = params;
-//     const body = await request.json();
+    const expenseExists = await Expense.findById(expenseId);
+
+    if (!expenseExists) {
+      return NextResponse.json({error: "Expense not found"}, {status: 404});
+    }
+
+    const group = await Group.findByIdAndUpdate(groupId, {
+      $pull: {expenses: expenseId}}, {new: true}); //remove the expense id from the array of expenses.
+    
+    if (!group) {
+      return NextResponse.json({error: "Group not found"}, {status: 404});
+    }
+
+    if (group?.members && group.members.length > 0) { // delete all user expenses associated with the expense
+      for (const memberId of group.members) {
+        const userExpense = await UserExpense.findOneAndDelete({
+          user_id: memberId,
+          expense_id: expenseId,
+        })
+        
+        if (!userExpense) {
+          return NextResponse.json({error: "User expense not found", memberId, expenseId}, {status: 404});
+        }
+        console.log(userExpense);
+      }
+    }
+
+    const expenseToDelete = await Expense.findByIdAndDelete(expenseId); // lastly delete the expense
+
+    if (!expenseToDelete) {
+      return NextResponse.json({message: "Expense not found"}, {status: 404});
+    }
   
-//     const updatedExpense = Expense.findByIdAndUpdate(expenseId, {
-//       name: body.name,
-//       description: body.description,
-//       amount: body.amount,
-//       category: body.category
-//     }, {new:true});
+    return NextResponse.json({message: "Expense succesfully deleted"}, {status: 200});
 
-//     if (!updatedExpense) {
-//       return NextResponse.json({message: "Expense not found"}, {status: 404});
-//     }
-  
-//     return NextResponse.json({message: "Expense succesfully updated", updatedExpense}, {status: 200});
+  } catch(error) {
+    return NextResponse.json({error: error})
+  }
+} 
 
-//   } catch(error) {
-//     return NextResponse.json({error: error})
-//   }
-// } - Ignore this for now
+// still need to delete from AWS
