@@ -40,8 +40,6 @@ export const POST = async(request:NextRequest, { params } : { params: { groupId:
 
       if (receiptRequest.ok) {
         const receiptData = await receiptRequest.json();
-
-        console.log(receiptData);
         receiptUrl = receiptData.storedReceiptUrl;
       } else {
         throw new Error('Failed to upload receipt');
