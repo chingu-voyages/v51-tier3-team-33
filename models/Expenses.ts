@@ -5,7 +5,7 @@ export interface IExpense extends Document {
   description: String,
   amount: Number,
   category: String,
-  receipt_id: String,
+  receipt_url: String,
   date: Date,
   group_id: mongoose.Schema.Types.ObjectId;
 }

@@ -29,11 +29,21 @@ export const POST = async(request:NextRequest, { params } : { params: { groupId:
       receiptFile: formData.get("file") as File,
     };
 
+    let expense = await Expense.create({
+      name: body.name,
+      description: body.description,
+      amount: body.amount,
+      category: body.category,
+      group_id: groupId,
+      receipt_url: receiptUrl // initially undefined.
+    })
+
     if (body.receiptFile) {
       const receiptFormData = new FormData();
       receiptFormData.append("file", body.receiptFile);
+      receiptFormData.append("expenseId", (expense._id) as string); // passing the expense id to the form to easily identify the expense the image will belong to in AWS S3
 
-      const receiptRequest = await fetch(`${process.env.BASE_URL}/api/s3-upload`,{
+      const receiptRequest = await fetch(`${process.env.BASE_URL}/api/groups/s3-upload`,{
         method: "POST",
         body: receiptFormData
       });
@@ -41,19 +51,18 @@ export const POST = async(request:NextRequest, { params } : { params: { groupId:
       if (receiptRequest.ok) {
         const receiptData = await receiptRequest.json();
         receiptUrl = receiptData.storedReceiptUrl;
+
+        const updatedExpense = await Expense.findByIdAndUpdate(expense._id, // add the receipt url to the newly created expense
+          {receipt_url: receiptUrl}, {new: true}
+        )
+
+        if (updatedExpense) { // reassign the expense to be returned with the new expense that has the receipt url
+          expense = updatedExpense;
+        }
       } else {
         throw new Error('Failed to upload receipt');
       }
     }
-
-    const expense = await Expense.create({
-      name: body.name,
-      description: body.description,
-      amount: body.amount,
-      category: body.category,
-      group_id: groupId,
-      receipt_url: receiptUrl
-    })
 
     const updatedGroup = await Group.findByIdAndUpdate(groupId,
       { $addToSet: {expenses: expense._id} }, // add to set prevent duplicates from being added.
