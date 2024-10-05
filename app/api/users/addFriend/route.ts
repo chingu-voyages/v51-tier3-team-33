@@ -1,15 +1,27 @@
 import dbConnect from "@/lib/dbConnect";
 import User from "@/models/Users";
+import { ObjectId } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
+interface addFriendBody {
+  userId: ObjectId;
+  friendId?: ObjectId;
+  friendEmail?: string;
+}
 
 export const POST = async (request: NextRequest) => { // Handles the logic of adding friends to list of user and vice versa.
   try {
     await dbConnect(); 
-    const body = await request.json();
-    const { userId, friendId } = body; 
+    const body: addFriendBody = await request.json();
+    const { userId, friendId, friendEmail} = body; 
     
-    const friend = await User.findById(friendId); // I can modify this to look for the friend by name or email if need be.
+    const friend = await User.findOne({
+      $or: [
+        { _id: friendId },
+        { email: friendEmail }, //case sensitive.
+      ]
+    });
+
     const user = await User.findById(userId);
   
     if (!user) {
@@ -20,7 +32,7 @@ export const POST = async (request: NextRequest) => { // Handles the logic of ad
       return NextResponse.json({error: "Friend not found"}, {status: 404});
     }
 
-    if (user.friends.includes(friendId)) {
+    if (user.friends.includes(friend.id)) {
       return NextResponse.json({ error: "Friend is already in the user's friends list" }, {status: 400});
     }
 
@@ -28,7 +40,7 @@ export const POST = async (request: NextRequest) => { // Handles the logic of ad
       return NextResponse.json({ error: "User is already in the friend's friends list" }, {status: 400});
     }
 
-    user.friends.push(friendId);
+    user.friends.push(friend.id);
     friend.friends.push(userId);
 
     await user.save();
