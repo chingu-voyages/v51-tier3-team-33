@@ -7,18 +7,21 @@ interface addFriendBody {
   userId: ObjectId;
   friendId?: ObjectId;
   friendEmail?: string;
+  friendFirstName?: string;
+  friendLastName?: string;
 }
 
 export const POST = async (request: NextRequest) => { // Handles the logic of adding friends to list of user and vice versa.
   try {
     await dbConnect(); 
     const body: addFriendBody = await request.json();
-    const { userId, friendId, friendEmail} = body; 
-    
+    const { userId, friendId, friendEmail, friendFirstName, friendLastName} = body; 
+
     const friend = await User.findOne({
       $or: [
         { _id: friendId },
         { email: friendEmail }, //case sensitive.
+        {firstName: friendFirstName, lastName: friendLastName} // case sensitive
       ]
     });
 
