@@ -3,6 +3,7 @@ import Expense from "@/models/Expenses";
 import Group from "@/models/Group";
 import { NextRequest, NextResponse } from "next/server";
 import UserExpense from "@/models/UserExpense";
+import { deleteFromS3 } from "@/app/api/groups/s3-upload/route";
 
 export const DELETE = async (request: NextRequest, { params }: { params: { groupId: string; expenseId: string } }) => {
   try {
@@ -10,10 +11,17 @@ export const DELETE = async (request: NextRequest, { params }: { params: { group
 
     const {groupId, expenseId} = params;
 
-    const expenseExists = await Expense.findById(expenseId);
+    const existingExpense = await Expense.findById(expenseId);
 
-    if (!expenseExists) {
+    if (!existingExpense) {
       return NextResponse.json({error: "Expense not found"}, {status: 404});
+    }
+
+    if (existingExpense.receipt_url) { // if the expense has an existing receipt image, delete it
+      const url = existingExpense.receipt_url;
+      const baseUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_S3_REGION}.amazonaws.com/`;
+      const fileName = url.replace(baseUrl, "");
+      await deleteFromS3(fileName);
     }
 
     const group = await Group.findByIdAndUpdate(groupId, {
@@ -49,5 +57,3 @@ export const DELETE = async (request: NextRequest, { params }: { params: { group
     return NextResponse.json({error: error})
   }
 } 
-
-// still need to delete from AWS
