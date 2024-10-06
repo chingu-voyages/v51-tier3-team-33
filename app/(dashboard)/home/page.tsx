@@ -12,6 +12,7 @@ export default function Page() {
   const { data } = useSession();
   const userData = data?.user;
 
+  console.log(userData)
 
   return (
     <div className='relative'>

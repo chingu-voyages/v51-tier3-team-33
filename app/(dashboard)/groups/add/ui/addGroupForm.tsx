@@ -6,32 +6,33 @@ import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import AddNewMemberForm from './addNewMemberForm';
 
-//fake data generator - remove after connecting to db
-import { generateFakeMembers } from '@/utils/generateFakeMembers';
-
-interface Member {
-  id: number;
-  name: string;
+interface User {
+  _id: number;
+  firstName: string;
+  lastName: string;
   email: string;
-  venmo: string;
 }
-
-const fakeMembers = generateFakeMembers(3);
 
 const NewGroupForm: React.FC = () => {
   const { register, handleSubmit, reset, setValue } = useForm();
 
-  const [members, setMembers] = useState<Member[]>([]);
+  const [members, setMembers] = useState<User[]>([]);
   const [groupType, setGroupType] = useState<string | null>(null);
-  //remove this useeffect and fakemembers when db is connected
 
-  useEffect(() => {
-    setMembers(fakeMembers);
-  }, []);
+    //TO DO TO DO TO DO
+    //create pop up - success
+    //send data to db - post groups
+    //user creating this form must be a member of this group by default
 
+    const addNewGroupToDatabase = () => {
+
+    }
+    
   const onSubmit = (data: any) => {
     console.log('From data:', data);
-    reset();
+      reset();
+      setMembers([]);
+      setGroupType(null);
   };
 
   const handleGroupTypeSelect = (type: string) => {
@@ -40,8 +41,13 @@ const NewGroupForm: React.FC = () => {
   };
 
   const handleDeleteMember = (id: number) => {
-    setMembers((prev) => prev.filter((member) => member.id !== id));
+    setMembers((prev) => prev.filter((member) => member._id !== id));
   };
+
+    const handleAddMember = (newMember: User) => {
+        setMembers((prevMembers) => [newMember, ...prevMembers]);
+        setValue('groupMembers', [newMember, ...members])     
+    }
 
   return (
     <form
@@ -89,24 +95,25 @@ const NewGroupForm: React.FC = () => {
           )}
           {members.map((member) => (
             <div
-              key={member.id}
+              key={member._id}
               className='flex items-center justify-between border bg-muted'>
               <div className='ml-2'>
-                <p className='font-semibold'>{member.name}</p>
+                <p className='font-semibold'>
+                  {member.firstName} {member.lastName}
+                </p>
                 <p>{member.email}</p>
               </div>
               <div>
                 <Button
                   type='button'
                   className='bg-red mr-2'
-                  onClick={() => handleDeleteMember(member.id)}>
+                  onClick={() => handleDeleteMember(member._id)}>
                   Delete
                 </Button>
               </div>
             </div>
           ))}
-          <AddNewMemberForm />
-
+          <AddNewMemberForm onAddMember={handleAddMember} />
         </div>
         <div className='flex justify-center gap-4 mt-4'>
           <Button

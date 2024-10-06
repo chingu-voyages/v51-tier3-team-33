@@ -8,7 +8,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 interface User {
   _id: number;
@@ -17,16 +18,22 @@ interface User {
   email: string;
 }
 
-export default function AddNewMemberForm() {
+interface AddNewMemberFormProps {
+    onAddMember: (user: User) => void;
+}
+
+export default function AddNewMemberForm({onAddMember} : AddNewMemberFormProps) {
   const [searchQuery, setSearchQuery] = useState<string | null>(null);
   const [searchResults, setSearchResults] = useState<User[]>([]);
-  const [hasStartedSearch, setHasStartedSearch] = useState<boolean>(false);
-
-  useEffect(() => {
+const [hasStartedSearch, setHasStartedSearch] = useState<boolean>(false);
+    
+  const resetPopoverHandler = () => {
     setSearchResults([]);
     setSearchQuery(null);
     setHasStartedSearch(false);
-  }, []);
+  };
+
+    //TO DO search only through users friends
 
   const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -40,16 +47,16 @@ export default function AddNewMemberForm() {
           throw new Error('Failed to fetch users');
         }
         const data = await response.json();
-          
-          const foundUsers = data.users;
 
-          const filtered = foundUsers.filter(
-            (user) =>
-              user.firstName.toLowerCase().includes(query.toLowerCase()) ||
-              user.lastName.toLowerCase().includes(query.toLowerCase()) ||
-              user.email.toLowerCase().includes(query.toLowerCase())
-          );
-          setSearchResults(filtered);
+        const foundUsers = data.users;
+
+        const filtered = foundUsers.filter(
+          (user: User) =>
+            user.firstName.toLowerCase().includes(query.toLowerCase()) ||
+            user.lastName.toLowerCase().includes(query.toLowerCase()) ||
+            user.email.toLowerCase().includes(query.toLowerCase())
+        );
+        setSearchResults(filtered);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -61,7 +68,9 @@ export default function AddNewMemberForm() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button className='bg-green-300 text-white mt-4 w-64 mx-auto block'>
+        <Button
+          className='bg-green-300 text-white mt-4 w-64 mx-auto block'
+          onClick={resetPopoverHandler}>
           Add New Member
         </Button>
       </PopoverTrigger>
@@ -92,7 +101,8 @@ export default function AddNewMemberForm() {
                         </span>
                         <Button
                           type='button'
-                          className='bg-purple text-white mt-4'>
+                          className='bg-purple text-white mt-4'
+                          onClick={() => onAddMember(user)}>
                           Add
                         </Button>
                       </li>
