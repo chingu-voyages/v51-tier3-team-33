@@ -37,7 +37,7 @@ export const authConfig = {
       }
     },
 
-    async signIn({ account, profile }): Promise<any> {
+    async signIn({ account, profile } ): Promise<any> {
       try {
         const response = await fetch(`${process.env.BASE_URL}/api/auth/user/${profile?.email}`)
         const userData = await response.json();
@@ -68,11 +68,10 @@ export const authConfig = {
       }
     },
 
-    async redirect({ url, baseUrl }) {
-      // Redirect to the home page after sign in
-
-      return baseUrl; // This will direct to the home page
-    },
+    // async redirect({ url, baseUrl }) {
+    //   // Redirect to the home page after sign in
+    //   return baseUrl; // This will direct to the home page
+    // },
   },
   providers: [],
   trustHost: true,
