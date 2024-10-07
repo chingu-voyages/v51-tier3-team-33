@@ -68,10 +68,6 @@ export const authConfig = {
       }
     },
 
-    // async redirect({ url, baseUrl }) {
-    //   // Redirect to the home page after sign in
-    //   return baseUrl; // This will direct to the home page
-    // },
   },
   providers: [],
   trustHost: true,
