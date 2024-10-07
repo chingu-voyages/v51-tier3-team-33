@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import AddNewMemberForm from './addNewMemberForm';
+import { useSession } from 'next-auth/react';
 
 interface User {
-  _id: number;
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -19,20 +20,61 @@ const NewGroupForm: React.FC = () => {
   const [members, setMembers] = useState<User[]>([]);
   const [groupType, setGroupType] = useState<string | null>(null);
 
+
+  const { data } = useSession();
+  const currentUserId = data?.user?.id;
+
+  console.log(members)
     //TO DO TO DO TO DO
     //create pop up - success
-    //send data to db - post groups
-    //user creating this form must be a member of this group by default
 
-    // const addNewGroupToDatabase = () => {
+    const addNewGroupToDatabase = async (data: any) => {
+      try {
+        const response = await fetch('/api/groups', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: data.groupName,
+            description: data.groupType,
+            budget: data.groupBudget,
+            user_id: currentUserId,
+            members: data.groupMembers,
+          }),
+        });
 
-    // }
+        if (!response.ok) {
+          throw new Error('failed to create group');
+        }
+
+        const result = await response.json();
+        console.log('Group created successfully', result);
+
+      } catch (error) {
+        console.error('Error creating group:', error)
+}
+    }
     
-  const onSubmit = (data: any) => {
-    console.log('From data:', data);
-      reset();
-      setMembers([]);
-      setGroupType(null);
+  const onSubmit = async (data: any) => {
+    console.log('Form data:', data);
+    //Ensure current user is in the members array
+    const allGroupMembers = [
+      currentUserId,
+      ...members.map((member) => member._id),
+    ];
+
+    console.log('AllGroupMembers',allGroupMembers);
+
+    await addNewGroupToDatabase({
+      ...data,
+      members: allGroupMembers,
+    });
+
+    // Reset form and members after successful creation
+    reset();
+    setMembers([]);
+    setGroupType(null);
   };
 
   const handleGroupTypeSelect = (type: string) => {
@@ -52,10 +94,12 @@ const NewGroupForm: React.FC = () => {
         return prevMembers; //if member already exists return previous state
       }
       //if the member doesn;t exist, add them to array
-      return [newMember, ...prevMembers];
-    });
-    
-        setValue('groupMembers', members)     
+      const updatedMembers = [newMember, ...prevMembers];
+
+      //update the form value
+      setValue('groupMembers', updatedMembers); 
+      return updatedMembers
+    });           
     }
 
   return (
