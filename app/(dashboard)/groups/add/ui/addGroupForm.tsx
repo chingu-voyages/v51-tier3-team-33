@@ -19,14 +19,16 @@ const NewGroupForm: React.FC = () => {
   const [members, setMembers] = useState<User[]>([]);
   const [groupType, setGroupType] = useState<string | null>(null);
 
+
+  console.log('group members', members)
     //TO DO TO DO TO DO
     //create pop up - success
     //send data to db - post groups
     //user creating this form must be a member of this group by default
 
-    const addNewGroupToDatabase = () => {
+    //const addNewGroupToDatabase = () => {
 
-    }
+    //}
     
   const onSubmit = (data: any) => {
     console.log('From data:', data);
@@ -44,8 +46,17 @@ const NewGroupForm: React.FC = () => {
     setMembers((prev) => prev.filter((member) => member._id !== id));
   };
 
-    const handleAddMember = (newMember: User) => {
-        setMembers((prevMembers) => [newMember, ...prevMembers]);
+  const handleAddMember = (newMember: User) => {
+    
+    setMembers((prevMembers) => {
+      //check for duplicates
+      if (prevMembers.some(member => member._id === newMember._id)) {
+        return prevMembers; //if member already exists return previous state
+      }
+      //if the member doesn;t exist, add them to array
+      return [newMember, ...prevMembers];
+    });
+    
         setValue('groupMembers', [newMember, ...members])     
     }
 

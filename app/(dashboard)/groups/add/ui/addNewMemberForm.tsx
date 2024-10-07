@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Search } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
 interface User {
@@ -19,21 +19,45 @@ interface User {
 }
 
 interface AddNewMemberFormProps {
-    onAddMember: (user: User) => void;
+  onAddMember: (user: User) => void;
 }
 
-export default function AddNewMemberForm({onAddMember} : AddNewMemberFormProps) {
+export default function AddNewMemberForm({
+  onAddMember,
+}: AddNewMemberFormProps) {
   const [searchQuery, setSearchQuery] = useState<string | null>(null);
   const [searchResults, setSearchResults] = useState<User[]>([]);
-const [hasStartedSearch, setHasStartedSearch] = useState<boolean>(false);
-    
+  const [hasStartedSearch, setHasStartedSearch] = useState<boolean>(false);
+  const [userFriends, setUserFriends] = useState<number[]>([]);
+
+  const { data } = useSession();
+  const userId = data?.user?.id;
+
   const resetPopoverHandler = () => {
     setSearchResults([]);
     setSearchQuery(null);
     setHasStartedSearch(false);
   };
 
-    //TO DO search only through users friends
+  const getSessionUserFriends = async () => {
+    const response = await fetch(`/api/users?id=${userId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch user');
+    }
+    const data = await response.json();
+    const sessionUserFriends = data.user.friends;
+    setUserFriends(sessionUserFriends);
+  };
+
+  useEffect(() => {
+    getSessionUserFriends();
+  }, [userId]);
+
+  //helper function to get users
+
+  const getUserByIds = (userIds, users) => {
+    return users.filter(user => userIds.includes(user._id))
+  }
 
   const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -42,15 +66,18 @@ const [hasStartedSearch, setHasStartedSearch] = useState<boolean>(false);
 
     if (query) {
       try {
+        //get all users
         const response = await fetch('/api/users');
         if (!response.ok) {
-          throw new Error('Failed to fetch users');
+          throw new Error('Failed to fetch user');
         }
         const data = await response.json();
+        const userData = data.users;
 
-        const foundUsers = data.users;
+        //find matching users data objects
+        const matchingUsers = getUserByIds(userFriends, userData)
 
-        const filtered = foundUsers.filter(
+        const filtered = matchingUsers.filter(
           (user: User) =>
             user.firstName.toLowerCase().includes(query.toLowerCase()) ||
             user.lastName.toLowerCase().includes(query.toLowerCase()) ||
