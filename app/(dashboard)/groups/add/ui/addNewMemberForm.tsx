@@ -40,9 +40,13 @@ export default function AddNewMemberForm({
   };
 
   const getSessionUserFriends = async () => {
+
+    if (!userId) return;
+
     const response = await fetch(`/api/users?id=${userId}`);
     if (!response.ok) {
-      throw new Error('Failed to fetch user');
+      console.error('Failed to fetch user');
+      return;
     }
     const data = await response.json();
     const sessionUserFriends = data.user.friends;
