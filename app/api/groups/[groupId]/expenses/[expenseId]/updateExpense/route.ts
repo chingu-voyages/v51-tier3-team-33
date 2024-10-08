@@ -16,6 +16,7 @@ interface ExpenseBody {
   category: string
   receiptFile?: File
   member_contributions: Contributions[];
+  is_paid: boolean
 }
 
 export const PUT = async (request: NextRequest, { params }: { params: { groupId: string, expenseId: string } }) => {
@@ -33,7 +34,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { groupId:
       amount: parseFloat(formData.get("amount") as string),
       category: formData.get("category") as string,
       receiptFile: formData.get("file") as File,
-      member_contributions: JSON.parse(formData.get("contributions") as string) //make sure everything excluding the value of the amount are in double quotes like this: { "member_id": "id", "amount": 50}
+      member_contributions: JSON.parse(formData.get("contributions") as string), //make sure everything excluding the value of the amount are in double quotes like this: { "member_id": "id", "amount": 50}
+      is_paid: (formData.get("is_paid") as string).toLowerCase() === "true" ? true : false
     };
 
     console.log(formData);
@@ -71,7 +73,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { groupId:
       description: body.description,
       amount: body.amount,
       category: body.category,
-      receipt_url: receiptUrl // If this has not been set up, it will be undefined.
+      receipt_url: receiptUrl, // If this has not been set up, it will be undefined.
+      is_paid: body.is_paid
     }, {new:true});
 
     if (!updatedExpense) {
