@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface Group {
   _id: string;
@@ -66,24 +67,28 @@ const GroupsList: React.FC = () => {
         </Button>
       </div>
       {/* list */}
-      <ul className='mt-5'>
-        {groups.map((group) => {
-          return (
-            <li
-              key={group._id}
-              className=' flex h-[48px] w-64 grow items-center gap-2 rounded-md hover:font-bold p-4 px-5'>
-              <Image
-                src={'/images/logo/logo-icon.png'}
-                alt='Group Avatar'
-                width={100}
-                height={100}
-                className='w-10 h-10 rounded-full'
-              />
-              <span className='font-medium hover:font-bold'>{group.name}</span>
-            </li>
-          );
-        })}
-      </ul>
+      <ScrollArea className='h-72 w-full '>
+        <ul className='mt-5'>
+          {groups.map((group) => {
+            return (
+              <li
+                key={group._id}
+                className=' flex h-[48px] w-64 grow items-center gap-2 rounded-md hover:font-bold p-4 px-5'>
+                <Image
+                  src={'/images/logo/logo-icon.png'}
+                  alt='Group Avatar'
+                  width={100}
+                  height={100}
+                  className='w-10 h-10 rounded-full'
+                />
+                <span className='font-medium hover:font-bold'>
+                  {group.name}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </ScrollArea>
     </div>
   );
 };
