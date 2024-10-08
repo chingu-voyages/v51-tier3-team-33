@@ -3,6 +3,8 @@ import dbConnect from "@/lib/dbConnect";
 import Expense from "@/models/Expenses";
 import UserExpense from "@/models/UserExpense";
 import Group from "@/models/Group";
+import { MongoServerError } from 'mongodb';
+
 
 interface Contributions { // have the key be the userid and value be the amount of the contribution?
   member_id: string;
@@ -83,12 +85,9 @@ export const POST = async(request:NextRequest, { params } : { params: { groupId:
     return NextResponse.json({ message: 'Expense created successfully', expense, updatedGroup }, { status: 201 });
 
   } catch(error) {
-
-    if ((error as any).errorResponse) {
-      if ((error as any).errorResponse.code == 11000) {
-        return NextResponse.json({error: 'An expense with this info already exists', status: 409 });
-      };
-    }
+    if (error instanceof MongoServerError && error.errorResponse.code == 11000) {
+      return NextResponse.json({error: 'An expense with this info already exists', status: 409 });
+    };
     return NextResponse.json({ error: error }, { status: 400 });
   }
 };
