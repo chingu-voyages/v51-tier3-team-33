@@ -100,7 +100,13 @@ const NewGroupForm: React.FC = () => {
       setValue('groupMembers', updatedMembers); 
       return updatedMembers
     });           
-    }
+  }
+  
+  const handleFormReset = () => {
+    reset();
+    setMembers([]);
+    setGroupType(null);
+  }
 
   return (
     <form
@@ -171,7 +177,7 @@ const NewGroupForm: React.FC = () => {
         <div className='flex justify-center gap-4 mt-4'>
           <Button
             type='button'
-            onClick={() => reset()}
+            onClick={handleFormReset}
             className='bg-gray-500 text-white'>
             Cancel
           </Button>
