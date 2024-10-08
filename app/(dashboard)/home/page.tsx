@@ -10,7 +10,6 @@ import ExpensesGraph from './ui/expensesGraph';
 
 export default function Page() {
   const { data } = useSession();
-  console.log('data', data?.user);
   const userData = data?.user;
 
   return (
