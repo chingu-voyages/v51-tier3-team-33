@@ -5,7 +5,6 @@ import UserExpense from "@/models/UserExpense";
 import Group from "@/models/Group";
 import { MongoServerError } from 'mongodb';
 
-
 interface Contributions { // have the key be the userid and value be the amount of the contribution?
   member_id: string;
   amount: number;
@@ -18,6 +17,7 @@ interface ExpenseBody {
   category: string
   receiptFile?: File
   member_contributions: Contributions[];
+  is_paid: Boolean;
 }
 
 export const POST = async(request:NextRequest, { params } : { params: { groupId: string } }): Promise<NextResponse> => {
@@ -34,14 +34,28 @@ export const POST = async(request:NextRequest, { params } : { params: { groupId:
       amount: parseFloat(formData.get("amount") as string),
       category: formData.get("category") as string,
       receiptFile: formData.get("file") as File,
-      member_contributions: JSON.parse(formData.get("contributions") as string) //make sure everything excluding the value of the amount are in double quotes like this: { "member_id": "id", "amount": 50}
+      member_contributions: JSON.parse(formData.get("contributions") as string), //make sure everything excluding the value of the amount are in double quotes like this: { "member_id": "id", "amount": 50}
+      is_paid: (formData.get("is_paid") as string).toLowerCase() === "true" ? true : false
     };
+
+    console.log(body)
+
+    let expense = await Expense.create({
+      name: body.name,
+      description: body.description,
+      amount: body.amount,
+      category: body.category,
+      group_id: groupId,
+      receipt_url: receiptUrl,
+      is_paid: body.is_paid
+    })
 
     if (body.receiptFile) {
       const receiptFormData = new FormData();
       receiptFormData.append("file", body.receiptFile);
+      receiptFormData.append("expenseId", (expense._id) as string);
 
-      const receiptRequest = await fetch(`${process.env.BASE_URL}/api/s3-upload`,{
+      const receiptRequest = await fetch(`${process.env.BASE_URL}/api/groups/s3-upload`,{
         method: "POST",
         body: receiptFormData
       });
@@ -49,19 +63,20 @@ export const POST = async(request:NextRequest, { params } : { params: { groupId:
       if (receiptRequest.ok) {
         const receiptData = await receiptRequest.json();
         receiptUrl = receiptData.storedReceiptUrl;
-      } else {
+
+        const updatedExpense = await Expense.findByIdAndUpdate(expense._id, // add the receipt url to the newly created expense
+          {receipt_url: receiptUrl}, {new: true}
+        )
+
+        if (updatedExpense) { // reassign the expense to be returned with the new expense that has the receipt url
+          expense = updatedExpense;
+        }
+      }
+      
+      else {
         throw new Error('Failed to upload receipt');
       }
     }
-
-    const expense = await Expense.create({
-      name: body.name,
-      description: body.description,
-      amount: body.amount,
-      category: body.category,
-      group_id: groupId,
-      receipt_url: receiptUrl
-    })
 
     const updatedGroup = await Group.findByIdAndUpdate(groupId,
       { $addToSet: {expenses: expense._id} }, // add to set prevent duplicates from being added.
