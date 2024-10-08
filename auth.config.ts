@@ -2,16 +2,16 @@ import type { NextAuthConfig } from "next-auth";
 
 export const authConfig = {
   pages: {
-    signIn: "/login",
+    signIn: '/login',
   },
   callbacks: {
     async authorized({ auth, request: { nextUrl } }) {
       const isAuthenticated = !!auth?.user; // check if user session exists
-      const isLandingPage = nextUrl.pathname === "/";
-      const isDashboard = nextUrl.pathname.startsWith("/dashboard");
+      const isLandingPage = nextUrl.pathname === '/';
+      const isDashboard = nextUrl.pathname.startsWith('/dashboard');
       const query = new URLSearchParams(nextUrl.search);
-      const intendedURL = query.get("callbackUrl");
-      const isLoginPage = nextUrl.pathname.startsWith("/login");
+      const intendedURL = query.get('callbackUrl');
+      const isLoginPage = nextUrl.pathname.startsWith('/login');
 
       if (isLandingPage) return true;
 
@@ -33,11 +33,11 @@ export const authConfig = {
         
         return session;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
 
-    async signIn({ account, profile }): Promise<any> {
+    async signIn({ account, profile } ): Promise<any> {
       try {
         const response = await fetch(`${process.env.BASE_URL}/api/auth/user/${profile?.email}`)
         const userData = await response.json();
@@ -62,12 +62,12 @@ export const authConfig = {
         }
 
         return true;
-
       } catch (error) {
         console.log(error);
         return false;
       }
     },
+
   },
   providers: [],
   trustHost: true,
