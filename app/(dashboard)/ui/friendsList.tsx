@@ -1,5 +1,8 @@
+'use client'
+
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 // dummy group list
@@ -27,12 +30,19 @@ const friends = [
   },
 ];
 
+//TO DO: get user from the db and display their friends here
+
 const FriendsList = () => {
+
+  const router = useRouter();
+
   return (
     <div className='flex flex-col items-center justify-between mt-10 ml-2'>
       <div className='flex gap-4 items-center justify-center'>
         <h1 className='text-lg font-semibold text-grey'>Your friends</h1>
-        <Button className='bg-solitude outline-none text-purple font-semibold hover:bg-purple hover:text-white'>
+        <Button
+          className='bg-solitude outline-none text-purple font-semibold hover:bg-purple hover:text-white'
+          onClick={() => router.push('/friends/add')}>
           Add Friend
         </Button>
       </div>
