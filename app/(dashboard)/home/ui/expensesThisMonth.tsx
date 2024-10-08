@@ -12,18 +12,17 @@ export default function ExpensesThisMonth() {
     <div className='md:flex-1'>
       <h2 className='mb-2'>Expenses this September:</h2>
       <ScrollArea className='h-64 w-full rounded-md border bg-muted'>
-        <div className='p-4'>
+        <ul className='p-4'>
           {tags.map((tag) => (
-            <>
-              <div
-                key={tag}
+            <li key={tag}>
+              <p
                 className='text-sm'>
                 {tag}
-              </div>
+              </p>
               <Separator className='my-2' />
-            </>
+            </li>
           ))}
-        </div>
+        </ul>
       </ScrollArea>
     </div>
   );
