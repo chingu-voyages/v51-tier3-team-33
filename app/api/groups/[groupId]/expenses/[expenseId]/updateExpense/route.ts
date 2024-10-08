@@ -2,6 +2,12 @@ import dbConnect from "@/lib/dbConnect";
 import Expense from "@/models/Expenses";
 import { NextRequest, NextResponse } from "next/server";
 import { deleteFromS3 } from "@/app/api/groups/s3-upload/route";
+import UserExpense from "@/models/UserExpense";
+
+interface Contributions { // have the key be the userid and value be the amount of the contribution?
+  member_id: string;
+  amount: number;
+}
 
 interface ExpenseBody {
   name: string;
@@ -9,7 +15,7 @@ interface ExpenseBody {
   amount: number;
   category: string
   receiptFile?: File
-  //contributions will go here
+  member_contributions: Contributions[];
 }
 
 export const PUT = async (request: NextRequest, { params }: { params: { groupId: string, expenseId: string } }) => {
@@ -27,7 +33,10 @@ export const PUT = async (request: NextRequest, { params }: { params: { groupId:
       amount: parseFloat(formData.get("amount") as string),
       category: formData.get("category") as string,
       receiptFile: formData.get("file") as File,
+      member_contributions: JSON.parse(formData.get("contributions") as string) //make sure everything excluding the value of the amount are in double quotes like this: { "member_id": "id", "amount": 50}
     };
+
+    console.log(formData);
 
     if (body.receiptFile) {
       const existingExpense = await Expense.findById(expenseId);
@@ -67,6 +76,21 @@ export const PUT = async (request: NextRequest, { params }: { params: { groupId:
 
     if (!updatedExpense) {
       return NextResponse.json({message: "Expense not found"}, {status: 404});
+    }
+
+    console.log(body.member_contributions)
+
+    for (const contribution of body.member_contributions) {
+      const existingUserExpense = await UserExpense.findOne({
+        user_id: contribution.member_id,
+        expense_id: expenseId,
+      });
+
+      if (existingUserExpense) {
+        existingUserExpense.contribution = contribution.amount;
+        await existingUserExpense.save();
+        console.log(existingUserExpense)
+      }
     }
   
     return NextResponse.json({message: "Expense succesfully updated", updatedExpense}, {status: 200});
