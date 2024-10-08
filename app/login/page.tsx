@@ -2,13 +2,16 @@
 
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 
 const Page = () => {
   return (
-    <div className='h-dvh  '>
-      <img
-        className='w-dvw'
+    <div className='h-screen flex flex-col items-center justify-center  '>
+      <Image
+        className='mb-10'
+        width={200}
+        height={200}
         src={'/images/logo/logo-color.png'}
         alt='Logo'
       />
