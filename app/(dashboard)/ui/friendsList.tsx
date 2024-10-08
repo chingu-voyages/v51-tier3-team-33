@@ -3,38 +3,52 @@
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
-// dummy group list
+interface User {
+  _id: number;
+  firstName: string;
+  lastName: string;
+  image?: string;
+}
 
-const friends = [
-  {
-    id: 101,
-    name: 'Scotty Schuster',
-    imageUrl: '/images/avatars/avatar1.png',
-  },
-  {
-    id: 102,
-    name: 'Dominic Morar',
-    imageUrl: '/images/avatars/avatar2.png',
-  },
-  {
-    id: 103,
-    name: 'Elizabeth Nienow',
-    imageUrl: '/images/avatars/avatar3.png',
-  },
-  {
-    id: 104,
-    name: 'Parher Berge',
-    imageUrl: '/images/avatars/avatar4.png',
-  },
-];
+const FriendsList: React.FC = () => {
 
-//TO DO: get user from the db and display their friends here
-
-const FriendsList = () => {
-
+  const [userFriends, setUserFriends] = useState<User[]>([]);
   const router = useRouter();
+  const { data } = useSession();
+  const userId = data?.user?.id;
+
+  const getSessionUserFriends = async () => {
+    if (!userId) return;
+    try {
+        const response = await fetch(`/api/users?id=${userId}`);
+    if (!response.ok) {
+      console.error('Failed to fetch user');
+      return;
+    }
+    const userData = await response.json();
+    const sessionUserFriends: number[] = userData.user.friends;
+    
+    const result = await fetch(`/api/users`);
+    if (!result.ok) {
+      console.error('Failed to fetch all users');
+      return;
+    }
+
+    const allUsersData = await result.json();
+    const friendsData = allUsersData.users.filter(user => sessionUserFriends.includes(user._id));
+    setUserFriends(friendsData);
+    } catch (error) {
+      console.error('Error fetching friends:', error)
+    } 
+  };
+
+  useEffect(() => {
+    getSessionUserFriends();   
+  }, [userId]);
+
 
   return (
     <div className='flex flex-col items-center justify-between mt-10 ml-2'>
@@ -48,19 +62,21 @@ const FriendsList = () => {
       </div>
       {/* list */}
       <ul className='mt-5'>
-        {friends.map((friend) => {
+        {userFriends.map((friend) => {
           return (
             <li
-              key={friend.id}
+              key={friend._id}
               className=' flex h-[48px] w-64 grow items-center gap-2 rounded-md hover:font-bold p-4 px-5'>
               <Image
-                src={friend.imageUrl}
-                alt='Group Avatar'
+                src={friend.image || '/images/logo/logo-icon.png'}
+                alt='Friend avatar'
                 width={100}
                 height={100}
                 className='w-10 h-10 rounded-full'
               />
-              <span className='font-medium hover:font-bold'>{friend.name}</span>
+              <span className='font-medium hover:font-bold'>
+                {friend.firstName} {friend.lastName}
+              </span>
             </li>
           );
         })}
