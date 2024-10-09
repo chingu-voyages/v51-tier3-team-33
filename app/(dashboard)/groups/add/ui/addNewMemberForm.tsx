@@ -1,5 +1,3 @@
-//search users collection based on input value and returna  friend
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {

@@ -70,7 +70,7 @@ const NewGroupForm: React.FC = () => {
       ...members.map((member) => member._id).filter((id): id is string => id !== undefined),
     ];
 
-    console.log('AllGroupMembers', allGroupMembers);
+    //console.log('AllGroupMembers', allGroupMembers);
 
     await addNewGroupToDatabase({
       ...data,
