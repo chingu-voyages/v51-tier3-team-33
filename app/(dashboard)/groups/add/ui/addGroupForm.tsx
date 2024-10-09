@@ -119,12 +119,12 @@ const NewGroupForm: React.FC = () => {
 
   return (
     <form
-      className='flex flex-col p-5'
+      className='flex flex-col p-5 w-[350px] md:w-full md:max-w-[650px] border rounded'
       onSubmit={handleSubmit(onSubmit)}>
       <h1 className='text-2xl font-bold mb-4'>New Group</h1>
       <div className='mb-4'>
         <h2 className='text-lg mb-2'>Group Type</h2>
-        <div className='flex gap-2'>
+        <div className='flex flex-wrap gap-2'>
           {['trip', 'party', 'dining', 'housing', 'other'].map((type) => (
             <Button
               type='button'
