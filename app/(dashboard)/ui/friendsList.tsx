@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface User {
-  _id: number;
+  _id: string;
   firstName: string;
   lastName: string;
   image?: string;
@@ -29,8 +29,9 @@ const FriendsList: React.FC = () => {
       console.error('Failed to fetch user');
       return;
     }
-    const userData = await response.json();
-    const sessionUserFriends: number[] = userData.user.friends;
+      const userData = await response.json();
+      console.log('friends', userData.user.friends)
+    const sessionUserFriends: string[] = userData.user.friends;
     
     const result = await fetch(`/api/users`);
     if (!result.ok) {
@@ -39,7 +40,7 @@ const FriendsList: React.FC = () => {
     }
 
     const allUsersData = await result.json();
-    const friendsData = allUsersData.users.filter(user => sessionUserFriends.includes(user._id));
+    const friendsData = allUsersData.users.filter((user: User) => sessionUserFriends.includes(user._id));
     setUserFriends(friendsData);
     } catch (error) {
       console.error('Error fetching friends:', error)

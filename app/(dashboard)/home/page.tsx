@@ -8,10 +8,14 @@ import ExpensesThisMonth from './ui/expensesThisMonth';
 import ExpensesGraph from './ui/expensesGraph';
 import { useEffect, useState } from 'react';
 
+interface Group {
+  _id: string;
+  members: string[];
+}
 
 export default function Page() {
-  const [userGroups, setUserGroups] = useState<number>();
-  const [userFriends, setUserFriends] = useState<number>();
+  const [userGroups, setUserGroups] = useState<number>(0);
+  const [userFriends, setUserFriends] = useState<number>(0);
 
   const { data } = useSession();
   const userData = data?.user;
@@ -36,10 +40,11 @@ export default function Page() {
   }
 
   const getUserGroups = async () => {
+    if (!sessionUserId) return;
     try {
       const response = await fetch('api/groups');
       const data = await response.json();
-      const userGroups = data.groups.filter((group) =>
+      const userGroups = data.groups.filter((group: Group) =>
         group.members.includes(sessionUserId)
       );
       setUserGroups(userGroups.length);
