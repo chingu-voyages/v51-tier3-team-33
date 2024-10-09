@@ -7,6 +7,7 @@ export interface IGroup extends Document {
   admin_id: mongoose.Schema.Types.ObjectId;
   members: mongoose.Schema.Types.ObjectId[];
   expenses: mongoose.Schema.Types.ObjectId[];
+  inviteLink: string;
 }
 
 const groupSchema: Schema = new Schema({
@@ -40,7 +41,11 @@ const groupSchema: Schema = new Schema({
       ref: "Expense",
       default: []
     }
-  ]
+  ],
+  invite_link: {
+    type: String,
+    required: true
+  }
 });
 
 const Group: Model<IGroup> = mongoose.models.Group || mongoose.model<IGroup>("Group", groupSchema);

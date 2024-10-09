@@ -3,6 +3,7 @@ import Group from "@/models/Group";
 import { ObjectId } from "mongoose";
 import dbConnect from "@/lib/dbConnect";
 import UserGroup from "@/models/UserGroup";
+import { nanoid } from 'nanoid';
 
 export const GET = async(): Promise<NextResponse> => {
   try {
@@ -27,12 +28,14 @@ export const POST = async(request: NextRequest): Promise<NextResponse> => {
   try {
     await dbConnect();
     const body: GroupBody = await request.json();
+    let inviteLink = nanoid(7);
 
     const group = await Group.create({
       name: body.name,
       description: body.description,
       budget: body.budget,
       admin_id: body.user_id,
+      invite_link: inviteLink
       members: [body.user_id, ...body.members]
     });
 

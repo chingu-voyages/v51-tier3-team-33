@@ -5,9 +5,10 @@ export interface IExpense extends Document {
   description: String,
   amount: Number,
   category: String,
-  receipt_id: mongoose.Schema.Types.ObjectId;
+  receipt_url: String,
   date: Date,
   group_id: mongoose.Schema.Types.ObjectId;
+  is_paid: boolean;
 }
 
 const expenseSchema: Schema = new Schema({
@@ -21,8 +22,8 @@ const expenseSchema: Schema = new Schema({
     required: true
   },
 
-  receipt_id: {
-    type: mongoose.Schema.Types.ObjectId,
+  receipt_url: {
+    type: String,
     required: false
   },
 
@@ -44,6 +45,11 @@ const expenseSchema: Schema = new Schema({
 
   group_id: {
     type:mongoose.Schema.Types.ObjectId,
+    required: true
+  },
+
+  is_paid: {
+    type: Boolean,
     required: true
   }
 
