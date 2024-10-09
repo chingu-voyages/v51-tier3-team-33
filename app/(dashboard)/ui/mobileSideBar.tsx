@@ -4,6 +4,7 @@ import { Menu } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import NavLinks from './navlinks';
+import SideNav from './sidenav';
 
 export default function MobileSideBar() {
   return (
@@ -23,7 +24,7 @@ export default function MobileSideBar() {
       <SheetContent
         side='left'
         className='flex flex-col bg-merino'>
-        <Link
+        {/* <Link
           className='mb-2 flex h-20 items-center justify-center p-4 md:h-40'
           href='/home'>
           <Image
@@ -33,7 +34,8 @@ export default function MobileSideBar() {
             height={100}
           />
         </Link>
-        <NavLinks />
+        <NavLinks /> */}
+        <SideNav />
       </SheetContent>
 
       {/* end of content of the sidenav menu in mobile view */}

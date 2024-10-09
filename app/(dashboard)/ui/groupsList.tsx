@@ -58,7 +58,9 @@ const GroupsList: React.FC = () => {
   return (
     <div className='flex flex-col items-center justify-between mt-10 ml-2'>
       <div className='flex grow gap-4 items-center justify-center'>
-        <h1 className='text-lg font-semibold text-grey'>Your groups</h1>
+        <h1 className='text-lg font-semibold text-grey hidden md:block'>
+          Your groups
+        </h1>
         <Button
           className='bg-solitude outline-none text-purple font-semibold hover:bg-purple hover:text-white'
           type='button'
@@ -67,7 +69,7 @@ const GroupsList: React.FC = () => {
         </Button>
       </div>
       {/* list */}
-      <ScrollArea className='h-72 w-full '>
+      <ScrollArea className='h-72 w-full hidden md:block '>
         <ul className='mt-5'>
           {groups.map((group) => {
             return (
