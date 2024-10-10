@@ -3,6 +3,8 @@ import dbConnect from "@/lib/dbConnect";
 import Expense from "@/models/Expenses";
 import UserExpense from "@/models/UserExpense";
 import Group from "@/models/Group";
+import { MongoServerError } from 'mongodb';
+
 
 interface ExpenseBody {
   name: string;
@@ -13,7 +15,7 @@ interface ExpenseBody {
   //contributions will go here
 }
 
-export const POST = async(request:NextRequest, { params } : { params: { groupId: string } }): Promise<any> => {
+export const POST = async(request:NextRequest, { params } : { params: { groupId: string } }): Promise<NextResponse> => {
   try {
     await dbConnect();
 
@@ -75,12 +77,9 @@ export const POST = async(request:NextRequest, { params } : { params: { groupId:
     return NextResponse.json({ message: 'Expense created successfully', expense, updatedGroup }, { status: 201 });
 
   } catch(error) {
-
-    if ((error as any).errorResponse) {
-      if ((error as any).errorResponse.code == 11000) {
-        return NextResponse.json({error: 'An expense with this info already exists', status: 409 });
-      };
-    }
+    if (error instanceof MongoServerError && error.errorResponse.code == 11000) {
+      return NextResponse.json({error: 'An expense with this info already exists', status: 409 });
+    };
     return NextResponse.json({ error: error }, { status: 400 });
   }
 };

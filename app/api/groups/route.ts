@@ -17,10 +17,11 @@ export const GET = async(): Promise<NextResponse> => {
 }
 
 interface GroupBody {
-  name: string,
-  description: string,
-  budget: number,
-  user_id: ObjectId | string
+  name: string;
+  description: string;
+  budget: number;
+  user_id: ObjectId | string;
+  members: (ObjectId | string)[];
 }
 
 export const POST = async(request: NextRequest): Promise<NextResponse> => {
@@ -34,7 +35,7 @@ export const POST = async(request: NextRequest): Promise<NextResponse> => {
       description: body.description,
       budget: body.budget,
       admin_id: body.user_id,
-      members: [body.user_id],
+      members: [body.user_id, ...body.members]
       invite_link: inviteLink
     });
 

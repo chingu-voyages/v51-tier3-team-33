@@ -12,18 +12,14 @@ export default function RecentActivity() {
       <div className='md:flex-1'>
         <h2 className='mb-2'>Recent activity:</h2>
         <ScrollArea className='h-64 w-full rounded-md border bg-muted'>
-          <div className='p-4'>
+          <ul className='p-4'>
             {tags.map((tag) => (
-              <>
-                <div
-                  key={tag}
-                  className='text-sm'>
-                  {tag}
-                </div>
+              <li key={tag}>
+                <p className='text-sm'>{tag}</p>
                 <Separator className='my-2' />
-              </>
+              </li>
             ))}
-          </div>
+          </ul>
         </ScrollArea>
       </div>
     );
