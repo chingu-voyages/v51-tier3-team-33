@@ -11,6 +11,7 @@ interface ExpenseBody {
   description: string;
   amount: number;
   category: string
+  receiptFile?: File
   //contributions will go here
 }
 
@@ -19,14 +20,41 @@ export const POST = async(request:NextRequest, { params } : { params: { groupId:
     await dbConnect();
 
     const { groupId } = params;
-    const body: ExpenseBody = await request.json();
+    const formData = await request.formData();
+    let receiptUrl: string | undefined;
+
+    const body: ExpenseBody = {
+      name: formData.get("name") as string,
+      description: formData.get("description") as string,
+      amount: parseFloat(formData.get("amount") as string),
+      category: formData.get("category") as string,
+      receiptFile: formData.get("file") as File,
+    };
+
+    if (body.receiptFile) {
+      const receiptFormData = new FormData();
+      receiptFormData.append("file", body.receiptFile);
+
+      const receiptRequest = await fetch(`${process.env.BASE_URL}/api/s3-upload`,{
+        method: "POST",
+        body: receiptFormData
+      });
+
+      if (receiptRequest.ok) {
+        const receiptData = await receiptRequest.json();
+        receiptUrl = receiptData.storedReceiptUrl;
+      } else {
+        throw new Error('Failed to upload receipt');
+      }
+    }
 
     const expense = await Expense.create({
       name: body.name,
       description: body.description,
       amount: body.amount,
       category: body.category,
-      group_id: groupId
+      group_id: groupId,
+      receipt_url: receiptUrl
     })
 
     const updatedGroup = await Group.findByIdAndUpdate(groupId,
