@@ -100,7 +100,7 @@ export default function AddNewMemberForm({
           Add New Member
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-80'>
+      <PopoverContent className='w-80 md:w-full'>
         <div className='flex flex-col gap-4'>
           <form>
             <div className='relative'>
@@ -122,7 +122,7 @@ export default function AddNewMemberForm({
                       <li
                         key={user._id}
                         className='flex justify-between items-center py-2 border-b'>
-                        <span>
+                        <span className='text-sm md:text-base'>
                           {user.firstName} {user.lastName} ({user.email})
                         </span>
                         <Button
