@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import AddNewMemberForm from './addNewMemberForm';
 import { useSession } from 'next-auth/react';
+import { useToast } from '@/hooks/use-toast';
+import { ToastAction } from '@/components/ui/toast';
 
 interface User {
   _id: string;
@@ -28,46 +30,55 @@ const NewGroupForm: React.FC = () => {
   const [members, setMembers] = useState<User[]>([]);
   const [groupType, setGroupType] = useState<string | null>(null);
 
-
   const { data } = useSession();
   const currentUserId = data?.user?.id;
+  const { toast } = useToast();
 
-    //TO DO TO DO TO DO
-    //create pop up - success
+  const addNewGroupToDatabase = async (data: NewGroupFormData) => {
+    try {
+      const response = await fetch('/api/groups', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: data.groupName,
+          description: data.groupType,
+          budget: data.groupBudget,
+          user_id: currentUserId,
+          members: data.groupMembers,
+        }),
+      });
 
-    const addNewGroupToDatabase = async (data: NewGroupFormData) => {
-      try {
-        const response = await fetch('/api/groups', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: data.groupName,
-            description: data.groupType,
-            budget: data.groupBudget,
-            user_id: currentUserId,
-            members: data.groupMembers,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('failed to create group');
-        }
-
-        const result = await response.json();
-        console.log('Group created successfully', result);
-      } catch (error) {
-        console.error('Error creating group:', error);
+      if (!response.ok) {
+        throw new Error('failed to create group');
       }
-    };
-    
+
+      const result = await response.json();
+      if (result.success) {
+        toast({
+          description: 'New group created successfully!.',
+        });
+      }
+    } catch (error) {
+       toast({
+         variant: 'destructive',
+         title: 'Uh oh! Something went wrong.',
+         description: 'There was a problem creating a group.',
+         action: <ToastAction altText='Try again'>Try again</ToastAction>,
+       });
+      console.error('Error creating group:', error);
+    }
+  };
+
   const onSubmit: SubmitHandler<NewGroupFormData> = async (data) => {
     console.log('Form data:', data);
     //Ensure current user is in the members array
-    const allGroupMembers : string[] = [
+    const allGroupMembers: string[] = [
       currentUserId || '',
-      ...members.map((member) => member._id).filter((id): id is string => id !== undefined),
+      ...members
+        .map((member) => member._id)
+        .filter((id): id is string => id !== undefined),
     ];
 
     //console.log('AllGroupMembers', allGroupMembers);
@@ -93,10 +104,9 @@ const NewGroupForm: React.FC = () => {
   };
 
   const handleAddMember = (newMember: User) => {
-    
     setMembers((prevMembers) => {
       //check for duplicates
-      if (prevMembers.some(member => member._id === newMember._id)) {
+      if (prevMembers.some((member) => member._id === newMember._id)) {
         return prevMembers; //if member already exists return previous state
       }
       //if the member doesn;t exist, add them to array
@@ -106,16 +116,16 @@ const NewGroupForm: React.FC = () => {
       setValue(
         'groupMembers',
         updatedMembers.map((member) => member._id)
-      ); 
-      return updatedMembers
-    });           
-  }
-  
+      );
+      return updatedMembers;
+    });
+  };
+
   const handleFormReset = () => {
     reset();
     setMembers([]);
     setGroupType(null);
-  }
+  };
 
   return (
     <form
