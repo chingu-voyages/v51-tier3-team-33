@@ -35,7 +35,7 @@ export const POST = async(request: NextRequest): Promise<NextResponse> => {
       description: body.description,
       budget: body.budget,
       admin_id: body.user_id,
-      members: [body.user_id, ...body.members]
+      members: [body.user_id, ...body.members],
       invite_link: inviteLink
     });
 
