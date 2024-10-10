@@ -30,7 +30,7 @@ const FriendsList: React.FC = () => {
       return;
     }
       const userData = await response.json();
-      console.log('friends', userData.user.friends)
+     // console.log('friends', userData.user.friends)
     const sessionUserFriends: string[] = userData.user.friends;
     
     const result = await fetch(`/api/users`);

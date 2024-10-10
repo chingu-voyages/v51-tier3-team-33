@@ -13,13 +13,24 @@ import {
 import React, { useState } from 'react'
 import { Label } from '@/components/ui/label';
 
+//TO DO create invite link component that the user will be taken to when he click on the link and he must also become friends with the invitor
+//TO DO add send email functionality
+//TO DO add success popup message
+
 const AddFriendForm = () => {
 
   const [friendName, setFriendName] = useState('');
   const [friendEmail, setFriendEmail] = useState('');
+  const shareableLink = 'http://localhost:3000/login';
 
   const handleCopyLink = () => {
-    console.log('Copy')
+    navigator.clipboard.writeText(shareableLink)
+      .then(() => {
+      alert('Invite Link copied to clipboard')
+      })
+      .catch(err => {
+      console.error('Failed to copy: ', err)
+    })
   }
 
   const handleSendInvite = () => {
@@ -27,18 +38,26 @@ const AddFriendForm = () => {
   };
 
   const handleCancel = () => {
-    console.log('Cancel')
+    setFriendEmail('')
+    setFriendName('')
   };
 
   return (
     <Card className='w-[350px] md:w-full md:max-w-[650px]'>
       <CardHeader>
-        <CardTitle>Invite a Friend</CardTitle>
+        <div className='flex flex-row items-center justify-between'>
+          <CardTitle className='mr-auto'>Invite or Add Friends</CardTitle>
+          <Button
+            className='bg-merino text-green border hover:text-white'
+            onClick={handleCopyLink}>
+            Copy Invite Link
+          </Button>
+        </div>
+
         <CardDescription>
           Invite new users to join and be your friend. Share your invite link to
           let new users join and be friends with you, on their own time.
         </CardDescription>
-        <Button onClick={handleCopyLink}>Copy Invite Link</Button>
       </CardHeader>
       <CardContent>
         <form>
@@ -65,6 +84,7 @@ const AddFriendForm = () => {
             </div>
           </div>
         </form>
+        <Button className='bg-green-300 text-white w-full mt-4'>Add another friend</Button>
       </CardContent>
       <CardFooter className='flex justify-between'>
         <Button
