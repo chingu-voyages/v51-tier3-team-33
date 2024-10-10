@@ -28,26 +28,27 @@ export const authConfig = {
     async session({ session }): Promise<any> {
       try {
         const response = await fetch(`${process.env.BASE_URL}/api/auth/user/${session.user.email}`)
+        
+        if (response.status === 404) {
+          return {};
+        }
+       
         const userData = await response.json();
         session.user.id = userData.user._id; // gives the session the user id from the database
         
         return session;
       } catch (error) {
         console.log(error);
+        return {};
       }
     },
 
     async signIn({ account, profile } ): Promise<any> {
       try {
         const response = await fetch(`${process.env.BASE_URL}/api/auth/user/${profile?.email}`)
-        const userData = await response.json();
 
-        if (userData) {
-          console.log("User already exists", userData)
-        }
-
-        else { //add user to database
-          await fetch(`${process.env.BASE_URL}/auth/api/user`, {
+        if (response.status === 404) {
+          await fetch(`${process.env.BASE_URL}/api/auth/user`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -61,13 +62,17 @@ export const authConfig = {
           })
         }
 
+        else { //add user to database
+          const userData = await response.json();
+          console.log("User already exists", userData)
+        }
+
         return true;
       } catch (error) {
         console.log(error);
         return false;
       }
-    },
-
+    }
   },
   providers: [],
   trustHost: true,
