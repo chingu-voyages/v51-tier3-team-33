@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/card';
 import React, { useState } from 'react'
 import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
 
 //TO DO create invite link component that the user will be taken to when he click on the link and he must also become friends with the invitor
 //TO DO add send email functionality
@@ -23,10 +24,14 @@ const AddFriendForm = () => {
   const [friendEmail, setFriendEmail] = useState('');
   const shareableLink = 'http://localhost:3000/login';
 
+  const { toast } = useToast();
+
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareableLink)
       .then(() => {
-      alert('Invite Link copied to clipboard')
+      toast({
+        description: 'Link copied to clipboard.',
+      });
       })
       .catch(err => {
       console.error('Failed to copy: ', err)
