@@ -81,7 +81,6 @@ InviteUserEmail.PreviewProps = {
   invitedByUsername: 'Alan',
   invitedByEmail: 'alan.turing@example.com',
   inviteLink: 'https://vercel.com/teams/invite/foo',
-
 } as InviteUserEmailProps;
 
 export default InviteUserEmail;
