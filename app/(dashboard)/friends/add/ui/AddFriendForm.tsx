@@ -13,18 +13,21 @@ import {
 import React, { useState } from 'react'
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+//import { useSession } from 'next-auth/react';
 
 //TO DO create invite link component that the user will be taken to when he click on the link and he must also become friends with the invitor
 //TO DO add send email functionality
-//TO DO add success popup message
 
 const AddFriendForm = () => {
 
   const [friendName, setFriendName] = useState('');
   const [friendEmail, setFriendEmail] = useState('');
-  const shareableLink = 'http://localhost:3000/login';
+  const shareableLink = 'http://localhost:3000/login'; 
 
   const { toast } = useToast();
+  // const { data } = useSession();
+  
+  // const userName = data?.user?.name || 'your friend' ;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareableLink)
@@ -38,10 +41,50 @@ const AddFriendForm = () => {
     })
   }
 
-  const handleSendInvite = () => {
-    console.log('Send')
-  };
+  // const handleSendInvite = async () => {
+  //   if (!friendName || !friendEmail) {
+  //     toast({
+  //       variant: 'destructive',
+  //       title: 'Error!',
+  //       description: 'Please fill out both fields',
+  //     });
+  //     return;
+  //   }
 
+  //   // Reset fields
+  //   setFriendName('');
+  //   setFriendEmail('');
+  //   toast({
+  //     title: 'Success!',
+  //     description: `Invite sent to ${friendName} at ${friendEmail}`,
+  //   });
+  // };
+
+ 
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+    
+    e.preventDefault();
+
+       if (!friendName || !friendEmail) {
+         toast({
+           variant: 'destructive',
+           title: 'Error!',
+           description: 'Please fill out both fields',
+         });
+         return;
+       }
+     
+  
+    // await fetch('/api/email', {
+    //   method: 'POST',
+    //   body: JSON.stringify({
+    //     userName: friendName,
+    //     friendEmail,
+    //     inviteLink: shareableLink,
+    //     invitedByUsername: userName,
+    //   }),
+    // });
+  }
   const handleCancel = () => {
     setFriendEmail('')
     setFriendName('')
@@ -65,7 +108,7 @@ const AddFriendForm = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className='grid w-full items-center gap-4'>
             <div className='flex flex-col space-y-1.5'>
               <Label htmlFor='name'>Friend&apos;s Name</Label>
@@ -99,7 +142,7 @@ const AddFriendForm = () => {
         </Button>
         <Button
           className='bg-green-300 text-white'
-          onClick={handleSendInvite}>
+          type='submit'>
           Send invite
         </Button>
       </CardFooter>
