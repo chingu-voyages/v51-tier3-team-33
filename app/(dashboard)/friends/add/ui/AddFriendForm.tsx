@@ -19,7 +19,6 @@ import { ToastAction } from '@/components/ui/toast';
 
 //TO DO create invite link component that the user will be taken to when he click on the link and he must also become friends with the invitor
 
-
 interface AddFriendFormData {
   name: string;
   email: string;
@@ -30,7 +29,9 @@ const AddFriendForm: React.FC = () => {
   const { register, handleSubmit, reset  } =
     useForm<AddFriendFormData>();
 
-  const shareableLink = 'http://localhost:3000/login'; 
+const shareableLink =
+  process.env.NEXT_PUBLIC_SHAREABLE_LINK || 'http://localhost:3000/login'; 
+
 
   const { toast } = useToast();
   const { data } = useSession();
