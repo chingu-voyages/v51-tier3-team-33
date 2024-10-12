@@ -6,11 +6,58 @@ import { useSession } from 'next-auth/react';
 import RecentActivity from './ui/recentActivity';
 import ExpensesThisMonth from './ui/expensesThisMonth';
 import ExpensesGraph from './ui/expensesGraph';
+import { useEffect, useState } from 'react';
 
+interface Group {
+  _id: string;
+  members: string[];
+}
 
 export default function Page() {
+  const [userGroups, setUserGroups] = useState<number>(0);
+  const [userFriends, setUserFriends] = useState<number>(0);
+
   const { data } = useSession();
   const userData = data?.user;
+  const sessionUserId = userData?.id;
+
+  const getUserFriends = async () => {
+    if (!sessionUserId) return;
+ try {
+        const response = await fetch(`/api/users?id=${sessionUserId}`);
+    if (!response.ok) {
+      console.error('Failed to fetch user');
+      return;
+    }
+   const userData = await response.json();
+   if (!userData) {
+     return;
+   }
+   setUserFriends(userData.user.friends.length)
+    } catch (error) {
+      console.error('Failed to fetch user friends')
+    }
+  }
+
+  const getUserGroups = async () => {
+    if (!sessionUserId) return;
+    try {
+      const response = await fetch('api/groups');
+      const data = await response.json();
+      const userGroups = data.groups.filter((group: Group) =>
+        group.members.includes(sessionUserId)
+      );
+      setUserGroups(userGroups.length);
+    } catch (error) {
+      console.error('Failed to fetch groups')
+    }
+  }
+  
+  useEffect(() => {
+    getUserFriends();
+    getUserGroups();
+  }, [sessionUserId])
+
 
   return (
     <div className='relative'>
@@ -42,10 +89,10 @@ export default function Page() {
           </div>
           <div className='flex flex-row gap-5'>
             <p>
-              Groups: <span className='font-bold'>4</span>{' '}
+              Groups: <span className='font-bold'>{userGroups}</span>{' '}
             </p>
             <p>
-              Friends: <span className='font-bold'>5</span>
+              Friends: <span className='font-bold'>{userFriends}</span>
             </p>
           </div>
         </div>

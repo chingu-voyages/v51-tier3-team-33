@@ -37,6 +37,25 @@ export const POST = async(request:NextRequest, { params } : { params: { groupId:
       member_contributions: JSON.parse(formData.get("contributions") as string), //make sure everything excluding the value of the amount are in double quotes like this: { "member_id": "id", "amount": 50}
       is_paid: (formData.get("is_paid") as string).toLowerCase() === "true" ? true : false
     };
+=======
+    };
+
+    if (body.receiptFile) {
+      const receiptFormData = new FormData();
+      receiptFormData.append("file", body.receiptFile);
+
+      const receiptRequest = await fetch(`${process.env.BASE_URL}/api/s3-upload`,{
+        method: "POST",
+        body: receiptFormData
+      });
+
+      if (receiptRequest.ok) {
+        const receiptData = await receiptRequest.json();
+        receiptUrl = receiptData.storedReceiptUrl;
+      } else {
+        throw new Error('Failed to upload receipt');
+      }
+    }
 
     console.log(body)
 
@@ -48,6 +67,7 @@ export const POST = async(request:NextRequest, { params } : { params: { groupId:
       group_id: groupId,
       receipt_url: receiptUrl,
       is_paid: body.is_paid
+
     })
 
     if (body.receiptFile) {

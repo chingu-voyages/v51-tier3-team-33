@@ -21,7 +21,7 @@ interface GroupBody {
   description: string;
   budget: number;
   user_id: ObjectId | string;
-  members: (ObjectId | string)[];
+  members?: (ObjectId | string)[];
 }
 
 export const POST = async(request: NextRequest): Promise<NextResponse> => {
@@ -29,16 +29,16 @@ export const POST = async(request: NextRequest): Promise<NextResponse> => {
     await dbConnect();
     const body: GroupBody = await request.json();
     let inviteLink = nanoid(7);
-
+    
     const members = body.members? body.members : []
-
+    
     const group = await Group.create({
       name: body.name,
       description: body.description,
       budget: body.budget,
       admin_id: body.user_id,
-      invite_link: inviteLink,
-      members: [body.user_id, ...body.members]
+      members: [body.user_id, ...members],
+      invite_link: inviteLink
     });
 
     await UserGroup.create({ //this collection is used to store all the groups is affiliated with

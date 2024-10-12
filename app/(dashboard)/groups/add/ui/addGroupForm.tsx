@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import AddNewMemberForm from './addNewMemberForm';
 import { useSession } from 'next-auth/react';
 
@@ -14,8 +14,16 @@ interface User {
   email: string;
 }
 
+interface NewGroupFormData {
+  groupName: string;
+  groupBudget: number;
+  groupType: string;
+  groupMembers: string[];
+}
+
 const NewGroupForm: React.FC = () => {
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { register, handleSubmit, reset, setValue } =
+    useForm<NewGroupFormData>();
 
   const [members, setMembers] = useState<User[]>([]);
   const [groupType, setGroupType] = useState<string | null>(null);
@@ -24,11 +32,10 @@ const NewGroupForm: React.FC = () => {
   const { data } = useSession();
   const currentUserId = data?.user?.id;
 
-  console.log(members)
     //TO DO TO DO TO DO
     //create pop up - success
 
-    const addNewGroupToDatabase = async (data: any) => {
+    const addNewGroupToDatabase = async (data: NewGroupFormData) => {
       try {
         const response = await fetch('/api/groups', {
           method: 'POST',
@@ -50,25 +57,24 @@ const NewGroupForm: React.FC = () => {
 
         const result = await response.json();
         console.log('Group created successfully', result);
-
       } catch (error) {
-        console.error('Error creating group:', error)
-}
-    }
+        console.error('Error creating group:', error);
+      }
+    };
     
-  const onSubmit = async (data: any) => {
+  const onSubmit: SubmitHandler<NewGroupFormData> = async (data) => {
     console.log('Form data:', data);
     //Ensure current user is in the members array
-    const allGroupMembers = [
-      currentUserId,
-      ...members.map((member) => member._id),
+    const allGroupMembers : string[] = [
+      currentUserId || '',
+      ...members.map((member) => member._id).filter((id): id is string => id !== undefined),
     ];
 
-    console.log('AllGroupMembers',allGroupMembers);
+    console.log('AllGroupMembers', allGroupMembers);
 
     await addNewGroupToDatabase({
       ...data,
-      members: allGroupMembers,
+      groupMembers: allGroupMembers,
     });
 
     // Reset form and members after successful creation
@@ -82,7 +88,7 @@ const NewGroupForm: React.FC = () => {
     setValue('groupType', type);
   };
 
-  const handleDeleteMember = (id: number) => {
+  const handleDeleteMember = (id: string) => {
     setMembers((prev) => prev.filter((member) => member._id !== id));
   };
 
@@ -97,7 +103,10 @@ const NewGroupForm: React.FC = () => {
       const updatedMembers = [newMember, ...prevMembers];
 
       //update the form value
-      setValue('groupMembers', updatedMembers); 
+      setValue(
+        'groupMembers',
+        updatedMembers.map((member) => member._id)
+      ); 
       return updatedMembers
     });           
   }

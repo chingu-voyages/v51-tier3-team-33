@@ -5,7 +5,7 @@ export interface IExpense extends Document {
   description: String,
   amount: Number,
   category: String,
-  receipt_url: String,
+  receipt_id: String,
   date: Date,
   group_id: mongoose.Schema.Types.ObjectId;
   is_paid: boolean;

@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
 interface User {
-  _id: number;
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -25,17 +25,15 @@ interface AddNewMemberFormProps {
 export default function AddNewMemberForm({
   onAddMember,
 }: AddNewMemberFormProps) {
-  const [searchQuery, setSearchQuery] = useState<string | null>(null);
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [hasStartedSearch, setHasStartedSearch] = useState<boolean>(false);
-  const [userFriends, setUserFriends] = useState<number[]>([]);
+  const [userFriends, setUserFriends] = useState<string[]>([]);
 
   const { data } = useSession();
   const userId = data?.user?.id;
 
   const resetPopoverHandler = () => {
     setSearchResults([]);
-    setSearchQuery(null);
     setHasStartedSearch(false);
   };
 
@@ -59,13 +57,12 @@ export default function AddNewMemberForm({
 
   //helper function to get users
 
-  const getUserByIds = (userIds, users) => {
+  const getUserByIds = (userIds: string[], users: User[]) => {
     return users.filter(user => userIds.includes(user._id))
   }
 
   const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
-    setSearchQuery(query);
     setHasStartedSearch(true);
 
     if (query) {
