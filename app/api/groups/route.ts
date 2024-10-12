@@ -29,9 +29,9 @@ export const POST = async(request: NextRequest): Promise<NextResponse> => {
     await dbConnect();
     const body: GroupBody = await request.json();
     let inviteLink = nanoid(7);
-
-    const members = body.members ? body.members : []
-
+    
+    const members = body.members? body.members : []
+    
     const group = await Group.create({
       name: body.name,
       description: body.description,
