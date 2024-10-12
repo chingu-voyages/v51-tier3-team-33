@@ -68,6 +68,11 @@ const GroupsList: React.FC = () => {
           Add Group
         </Button>
       </div>
+      {groups.length === 0 && (
+        <div className='mt-10 text-center'>
+          Create new group to start splitting your expenses!
+        </div>
+      )}
       {/* list */}
       <ScrollArea className='h-72 w-full hidden md:block '>
         <ul className='mt-5'>

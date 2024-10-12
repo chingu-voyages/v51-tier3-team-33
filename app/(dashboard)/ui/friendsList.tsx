@@ -65,6 +65,7 @@ const FriendsList: React.FC = () => {
         </Button>
       </div>
       {/* list */}
+      {userFriends.length === 0 && <div className='mt-10 text-center'>Add friends to start splitting your expenses!</div>}
       <ScrollArea className='h-72 w-full hidden md:block'>
         <ul className='mt-5'>
           {userFriends.map((friend) => {
