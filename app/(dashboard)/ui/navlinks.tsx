@@ -1,6 +1,4 @@
 'use client'
-//links displayed at the sidenav
-//TO DO: update href's when navigation is ready
 
 import {
   CurrencyDollarIcon,
