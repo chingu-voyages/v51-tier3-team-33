@@ -23,10 +23,14 @@ console.log(userGroups)
   const { toast } = useToast();
   const router = useRouter();
 
-    
+//TO DO TO DO implement deletion    
     const handleDeleteGroup = (groupId : string) => {
-        console.log('deleting', groupId)
+      console.log('deleting', groupId);
+      toast({
+        description: 'Group successfully deleted!'
+      })
     }
+  
   return (
     <div className='p-4'>
       <div className='flex items-center justify-between'>
