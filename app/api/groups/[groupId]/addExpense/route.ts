@@ -37,8 +37,6 @@ export const POST = async(request:NextRequest, { params } : { params: { groupId:
       member_contributions: JSON.parse(formData.get("contributions") as string), //make sure everything excluding the value of the amount are in double quotes like this: { "member_id": "id", "amount": 50}
       is_paid: (formData.get("is_paid") as string).toLowerCase() === "true" ? true : false
     };
-=======
-    };
 
     if (body.receiptFile) {
       const receiptFormData = new FormData();
@@ -125,4 +123,4 @@ export const POST = async(request:NextRequest, { params } : { params: { groupId:
     };
     return NextResponse.json({ error: error }, { status: 400 });
   }
-};
+}
