@@ -3,7 +3,7 @@ import Expense from "@/models/Expenses";
 import Group from "@/models/Group";
 import { NextRequest, NextResponse } from "next/server";
 import UserExpense from "@/models/UserExpense";
-import { deleteFromS3 } from "@/app/api/groups/s3-upload/route";
+import { deleteFromS3 } from "@/lib/s3Receipts";
 
 export const DELETE = async (request: NextRequest, { params }: { params: { groupId: string; expenseId: string } }) => {
   try {

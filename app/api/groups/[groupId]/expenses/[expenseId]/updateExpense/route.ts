@@ -1,7 +1,7 @@
 import dbConnect from "@/lib/dbConnect";
 import Expense from "@/models/Expenses";
 import { NextRequest, NextResponse } from "next/server";
-import { deleteFromS3 } from "@/app/api/groups/s3-upload/route";
+import { deleteFromS3 } from "@/lib/s3Receipts";
 import UserExpense from "@/models/UserExpense";
 
 interface Contributions { // have the key be the userid and value be the amount of the contribution?
