@@ -13,7 +13,11 @@ interface User {
 interface Group {
   _id: string;
   name: string;
-  members: string[];
+    members: string[];
+    budget: number;
+    description: string;
+    expenses: string[];
+    invite_link: string;
 }
 
 interface UserContextType {
@@ -58,7 +62,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
                 }
                 const userData = await response.json();
                 setUserDetails(userData.user);
-                console.log('friends', userData.user.friends);
                 const sessionUserFriends: string[] = userData.user.friends;
 
                 const result = await fetch(`/api/users`);
