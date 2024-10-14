@@ -3,7 +3,7 @@ import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client
 
 const { AWS_S3_REGION, AWS_S3_ACCESS_KEY_ID, AWS_S3_SECRET_ACCESS_KEY, AWS_S3_BUCKET_NAME } = process.env;
 
-if (!AWS_S3_REGION || !AWS_S3_ACCESS_KEY_ID || !AWS_S3_ACCESS_KEY_ID || !AWS_S3_BUCKET_NAME) {
+if (!AWS_S3_REGION || !AWS_S3_ACCESS_KEY_ID || !AWS_S3_SECRET_ACCESS_KEY || !AWS_S3_BUCKET_NAME) {
   throw new Error('Missing AWS S3 variables');
 }
 
@@ -15,7 +15,7 @@ const s3Client = new S3Client({
   }
 });
 
-export async function deleteFromS3(fileName: string) {
+export async function deleteFromS3(fileName: string): Promise<void> {
   const params = {
     Bucket: AWS_S3_BUCKET_NAME,
     Key: `${fileName}`
