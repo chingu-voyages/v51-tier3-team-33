@@ -64,7 +64,7 @@ export default function Page() {
       {/* Banner Section */}
       <div
         className='bg-cover bg-center h-48 flex items-center justify-center relative rounded-lg mb-10'
-        style={{ backgroundImage: 'url(https://via.placeholder.com/800x300)' }}>
+        style={{ backgroundImage: 'url(/images/logo/banner.jpg)' }}>
         <Avatar className='absolute top-40 bottom-0 right-6  rounded-full w-24 h-24'>
           <AvatarImage src={userData?.image ?? undefined} />
           <AvatarFallback>CN</AvatarFallback>{' '}
