@@ -42,7 +42,7 @@ export const POST = async(request:NextRequest, { params } : { params: { groupId:
       const receiptFormData = new FormData();
       receiptFormData.append("file", body.receiptFile);
 
-      const receiptRequest = await fetch(`${process.env.BASE_URL}/api/s3-upload`,{
+      const receiptRequest = await fetch(`${process.env.BASE_URL}/api/groups/s3-upload`,{
         method: "POST",
         body: receiptFormData
       });
