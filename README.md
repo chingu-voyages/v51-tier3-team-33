@@ -37,8 +37,6 @@ your repo access and to practice PR'ing with your team _before_ you start
 coding!
 
 - José Bonilla: [GitHub](https://github.com/jy-bonilla) / [LinkedIn](https://linkedin.com/in/bonillacodes)
-- Dylan Mullarkey: [GitHub](https://github.com/dylanmullarkey) / [LinkedIn](https://linkedin.com/in/dylanmullarkey)
-- Jack Weru Kioni: [GitHub](https://github.com/Jaweki) / [LinkedIn](https://linkedin.com/in/jaweki-dekut)
 - Olga Yudkin: [GitHub](https://github.com/cvtqx) / [LinkedIn](https://www.linkedin.com/in/olga-yudkin/)
 - Gary Smith: [GitHub](https://github.com/garysmith1933) / [LinkedIn](https://www.linkedin.com/in/garysmith1933/)
 - Jorge Alvarado: [GitHub](https://github.com/alvarado08) / [LinkedIn](https://www.linkedin.com/in/jorgep-alvarado/)
