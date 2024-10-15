@@ -1,3 +1,7 @@
+import Friends from "./ui/friends";
+
 export default function Page() {
-  return <p>Friends list will be here</p>;
+  return <div>
+    <Friends />
+  </div>;
 }

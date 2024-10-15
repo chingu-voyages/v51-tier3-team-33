@@ -1,59 +1,15 @@
 'use client';
 
+import { useUserContext } from '../../context/UserContext';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-
-interface Group {
-  _id: string;
-  name: string;
-  members: string[];
-}
-
-interface ApiResponse {
-  success: boolean;
-  groups: Group[];
-}
 
 const GroupsList: React.FC = () => {
   const router = useRouter();
-  const { data } = useSession();
-  const userData = data?.user;
-
-  const [groups, setGroups] = useState<Group[]>([]);
-
-  useEffect(() => {
-    const fetchGroups = async () => {
-      try {
-        const response = await fetch('/api/groups');
-        if (!response.ok) {
-          throw new Error('Failed to fetch groups');
-        }
-        const data: ApiResponse = await response.json();
-        //filter groups where user is a member
-        if (data.success) {
-          const userGroups = userData?.id
-            ? data.groups.filter((group) =>
-              group.members.includes(userData.id!))
-            : [];
-          
-           setGroups(userGroups);  
-        } else {
-          console.error("Failed to fetch groups:", data)
-}
-       
-      } catch (error) {
-        console.error('Error fetching groups:', error);
-      }
-    };
-
-    if (userData) {
-      fetchGroups();
-    }
-  }, [userData]);
+  const {  userGroups } = useUserContext();
 
   return (
     <div className='flex flex-col items-center justify-between mt-10 ml-2'>
@@ -71,7 +27,7 @@ const GroupsList: React.FC = () => {
       {/* list */}
       <ScrollArea className='h-72 w-full hidden md:block '>
         <ul className='mt-5'>
-          {groups.map((group) => {
+          {userGroups.map((group) => {
             return (
               <li
                 key={group._id}

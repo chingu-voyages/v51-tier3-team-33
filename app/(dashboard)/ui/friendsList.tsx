@@ -1,56 +1,15 @@
 'use client'
 
+import { useUserContext } from '../../context/UserContext';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-
-interface User {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  image?: string;
-}
 
 const FriendsList: React.FC = () => {
 
-  const [userFriends, setUserFriends] = useState<User[]>([]);
-  const router = useRouter();
-  const { data } = useSession();
-  const userId = data?.user?.id;
-
-  const getSessionUserFriends = async () => {
-    if (!userId) return;
-    try {
-        const response = await fetch(`/api/users?id=${userId}`);
-    if (!response.ok) {
-      console.error('Failed to fetch user');
-      return;
-    }
-      const userData = await response.json();
-     // console.log('friends', userData.user.friends)
-    const sessionUserFriends: string[] = userData.user.friends;
-    
-    const result = await fetch(`/api/users`);
-    if (!result.ok) {
-      console.error('Failed to fetch all users');
-      return;
-    }
-
-    const allUsersData = await result.json();
-    const friendsData = allUsersData.users.filter((user: User) => sessionUserFriends.includes(user._id));
-    setUserFriends(friendsData);
-    } catch (error) {
-      console.error('Error fetching friends:', error)
-    } 
-  };
-
-  useEffect(() => {
-    getSessionUserFriends();   
-  }, [userId]);
-
+const {  userFriends } = useUserContext();
+const router = useRouter();
 
   return (
     <div className='flex flex-col items-center justify-between mt-10 ml-2'>

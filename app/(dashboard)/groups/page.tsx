@@ -1,3 +1,5 @@
+import Groups from './ui/groups'
+
 export default function Page() {
-  return <p>Page to view a user groups</p>;
+  return <div><Groups/></div>;
 }
