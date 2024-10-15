@@ -33,8 +33,8 @@ export function DialogPopup() {
       </DialogTrigger>
       <DialogContent className='md:max-w-[425px] flex flex-col items-center rounded bg-white'>
         <DialogHeader>
-          <DialogTitle></DialogTitle>
-          <DialogDescription className='text-center'>
+          <DialogTitle className='sr-only'>Log out</DialogTitle>
+          <DialogDescription className='text-center' aria-describedby={undefined}>
             Are you sure you want to log out?
           </DialogDescription>
         </DialogHeader>

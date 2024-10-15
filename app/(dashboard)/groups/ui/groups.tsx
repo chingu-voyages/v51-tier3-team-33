@@ -24,11 +24,30 @@ console.log(userGroups)
   const router = useRouter();
 
 //TO DO TO DO implement deletion    
-    const handleDeleteGroup = (groupId : string) => {
+    const handleDeleteGroup = async (groupId : string) => {
       console.log('deleting', groupId);
-      toast({
-        description: 'Group successfully deleted!'
-      })
+      try {
+        const response = await fetch(`api/groups/${groupId}/deleteGroup`, {
+          method: 'DELETE'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error('Error deleting group:', errorData.error);
+          return;
+        }
+        const result = await response.json();
+        console.log(result.message);
+         toast({
+           description: 'Group successfully deleted',
+         });
+        
+      } catch (error) {
+        console.error('Error deleting group', error);
+        toast({
+          variant: 'destructive',
+          description: 'Failed to delete group',
+        });
+      }
     }
   
   return (
