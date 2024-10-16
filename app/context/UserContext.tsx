@@ -24,6 +24,8 @@ interface UserContextType {
   userDetails: User;
   userGroups: Group[];
   userFriends: User[];
+  setUserGroups: React.Dispatch<React.SetStateAction<Group[]>>;
+  setUserFriends: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
 interface ApiResponse {
@@ -110,9 +112,16 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     }, [sessionUserId]);
 
     return (
-        <UserContext.Provider value={{ userDetails, userGroups, userFriends }}>
-            {children}
-        </UserContext.Provider>
+      <UserContext.Provider
+        value={{
+          userDetails,
+          userGroups,
+          userFriends,
+          setUserGroups,
+          setUserFriends,
+        }}>
+        {children}
+      </UserContext.Provider>
     );
 };
 

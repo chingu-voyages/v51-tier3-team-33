@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 
 const Friends = () => {
-  const { userDetails, userFriends } = useUserContext();
+  const { userDetails, userFriends, setUserFriends } = useUserContext();
 
   const { toast } = useToast();
   const router = useRouter();
@@ -33,11 +33,19 @@ const Friends = () => {
 
       const result = await response.json();
       console.log(result.message);
-      toast({
-        description: result.message,
-      });
+         setUserFriends((prevFriends) =>
+           prevFriends.filter((friend) => friend._id !== friendId)
+         );
+         toast({
+           description: 'Friend successfully deleted',
+         });
+     
     } catch (error) {
       console.error('Error deleting friend:', error);
+      toast({
+        variant: 'destructive',
+        description: 'Failed to delete friend',
+      });
     }
   };
 
