@@ -35,13 +35,23 @@ const ExpenseForm: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [groupMembers, setGroupMembers] = useState<User[]>([])
   const [selectedGroupId, setSelectedGroupId] = useState<string>();
-    // const getGroupMembersInfo = () => {
+  const [splitType, setSplitType] = useState<string>('equally');
+  const [amount, setAmount] = useState<number>(0);
 
-  // }
-  
   const handleGroupIdSelection = (id: string) => {
     setSelectedGroupId(id)
   }
+
+  const handleSplitTypeSelection = (
+type: string
+  ) => {
+    setSplitType(type);
+  };
+
+  const amountChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value);
+    setAmount(value);
+  };
 
     const handleCancel = () => {
         reset();
@@ -58,7 +68,10 @@ const ExpenseForm: React.FC = () => {
         console.log('formdata', data)
     }
     
-
+  //TO DO submit form data
+  //if sum of split amounts is equal to total amount - success
+  //if not equal - display message - the expense is not paid
+  
     return (
       <div className='p-4'>
         <h2 className='text-2xl font-semibold mb-4'>Add New Expense</h2>
@@ -74,6 +87,7 @@ const ExpenseForm: React.FC = () => {
             type='number'
             placeholder='Amount'
             {...register('amount')}
+            onChange={amountChangeHandler}
           />
           <Input
             type='text'
@@ -114,7 +128,9 @@ const ExpenseForm: React.FC = () => {
               }}
             />
           </label>
-          <Select {...register('splitOption')}>
+          <Select
+            {...register('splitOption')}
+            onValueChange={handleSplitTypeSelection}>
             <SelectTrigger>
               <SelectValue placeholder='Select Split Option' />
             </SelectTrigger>
@@ -123,7 +139,11 @@ const ExpenseForm: React.FC = () => {
               <SelectItem value='custom'>Custom</SelectItem>
             </SelectContent>
           </Select>
-          <GroupMembers groupId={selectedGroupId} />
+          <GroupMembers
+            groupId={selectedGroupId}
+            splitType={splitType}
+            amount={amount}
+          />
           <label className='flex items-center'>
             <input
               type='checkbox'
@@ -152,5 +172,4 @@ const ExpenseForm: React.FC = () => {
  
 export default ExpenseForm;
 
-//get group members
-//display group members in a list 
+//pass group members here 
