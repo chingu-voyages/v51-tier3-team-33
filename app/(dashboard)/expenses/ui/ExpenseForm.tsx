@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 
 interface FormData {
   expenseName: string;
@@ -15,49 +14,67 @@ interface FormData {
   category: string;
   description: string;
   groupId: string;
-  receipt: FileList;
+  receipt?: File;
   splitOption: 'equally' | 'custom';
   isPaid: boolean;
 }
 
+interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 const ExpenseForm: React.FC = () => {
   const { userGroups } = useUserContext();
-    console.log(userGroups);
+    //console.log(userGroups);
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
+    const [groupMembers, setGroupMembers] = useState<User[]>([])
+    
     const getGroupMembersInfo = () => {
 
     }
-    
+
     const handleCancel = () => {
         reset();
     }
 
+    const onSubmit: SubmitHandler<FormData> = async(data) => {
+         if (selectedFile) {
+           data.receipt = selectedFile; // Assign the selected file to the form data
+         }
+        console.log('formdata', data)
+    }
+    
+
     return (
       <div className='p-4'>
         <h2 className='text-2xl font-semibold mb-4'>Add New Expense</h2>
-        <form className='space-y-4'>
+        <form
+          className='space-y-4'
+          onSubmit={handleSubmit(onSubmit)}>
           <Input
             type='text'
             placeholder='Expense Name'
             {...register('expenseName', {
-              required: 'Expense name is required',
+              required: true,
             })}
           />
           <Input
             type='number'
             placeholder='Amount'
             {...register('amount', {
-              required: 'Amount is required',
+              required: true,
               valueAsNumber: true,
             })}
           />
           <Input
             type='text'
             placeholder='Category'
-            {...register('category', { required: 'Category is required' })}
+            {...register('category', { required: true })}
           />
           <Textarea
             placeholder='Description'
@@ -65,7 +82,7 @@ const ExpenseForm: React.FC = () => {
           />
           <Select
             {...register('groupId', {
-              required: 'Group selection is required',
+              required: true,
             })}>
             <SelectTrigger>
               <SelectValue placeholder='Select a Group' />
@@ -96,7 +113,7 @@ const ExpenseForm: React.FC = () => {
           </label>
           <Select
             {...register('splitOption', {
-              required: 'Split option is required',
+              required: true,
             })}>
             <SelectTrigger>
               <SelectValue placeholder='Select Split Option' />
