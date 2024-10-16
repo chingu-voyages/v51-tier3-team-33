@@ -5,12 +5,28 @@ import dbConnect from "@/lib/dbConnect";
 import UserGroup from "@/models/UserGroup";
 import { nanoid } from 'nanoid';
 
-export const GET = async(): Promise<NextResponse> => {
+export const GET = async(req: NextRequest): Promise<NextResponse> => {
   try {
     await dbConnect();
-    const groups = await Group.find();
-    return NextResponse.json({success: true, groups}, {status: 200});
+    //get group id grom request url
 
+    const { searchParams } = new URL(req.url);
+    const groupId = searchParams.get('id');
+
+    console.log('params', searchParams)
+    if (groupId) {
+      //find group by id
+      const group = await Group.findById(groupId);
+      if (group) {
+        return NextResponse.json({ success: true, group });
+      } else {
+        return NextResponse.json({ success: false, message: 'Group not found' }, {status: 400})
+      }
+    } else {
+      //if group Id not provided return all groups
+      const groups = await Group.find();
+      return NextResponse.json({ success: true, groups }, { status: 200 });
+    }
   } catch (error) {
     return NextResponse.json({error: error})
   }

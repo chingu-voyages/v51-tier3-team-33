@@ -123,7 +123,7 @@ const ExpenseForm: React.FC = () => {
               <SelectItem value='custom'>Custom</SelectItem>
             </SelectContent>
           </Select>
-          <GroupMembers/>
+          <GroupMembers groupId={selectedGroupId} />
           <label className='flex items-center'>
             <input
               type='checkbox'
