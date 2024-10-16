@@ -48,6 +48,9 @@ const groupSchema: Schema = new Schema({
   }
 });
 
+groupSchema.index({ name: 1, description: 1, budget: 1, admin_id: 1}, { unique: true }); //prevents duplicates entries
+
 const Group: Model<IGroup> = mongoose.models.Group || mongoose.model<IGroup>("Group", groupSchema);
 
 export default Group;
+

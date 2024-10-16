@@ -5,12 +5,12 @@ import { NextResponse } from 'next/server';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
-  const { firstName, friendEmail, inviteLink, invitedByUsername } =
+  const { firstName, inviteLink, invitedByUsername } =
     await request.json();
   try {
     const { data, error } = await resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: friendEmail,
+      to: 'cvtqx@protonmail.com',
       subject: 'You are invited to join WeSplit App!',
       react: InviteUserEmail({
         username: firstName,
