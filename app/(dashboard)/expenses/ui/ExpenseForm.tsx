@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
+import { GroupMembers } from './GroupMembers';
 
 interface FormData {
   expenseName: string;
@@ -30,13 +31,17 @@ const ExpenseForm: React.FC = () => {
   const { userGroups } = useUserContext();
     //console.log(userGroups);
 
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
+    const { register, handleSubmit, reset } = useForm<FormData>();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [groupMembers, setGroupMembers] = useState<User[]>([])
-    
-    const getGroupMembersInfo = () => {
+  const [selectedGroupId, setSelectedGroupId] = useState<string>();
+    // const getGroupMembersInfo = () => {
 
-    }
+  // }
+  
+  const handleGroupIdSelection = (id: string) => {
+    setSelectedGroupId(id)
+  }
 
     const handleCancel = () => {
         reset();
@@ -46,6 +51,10 @@ const ExpenseForm: React.FC = () => {
          if (selectedFile) {
            data.receipt = selectedFile; // Assign the selected file to the form data
          }
+      if (selectedGroupId) {
+        data.groupId = selectedGroupId;
+      }
+      
         console.log('formdata', data)
     }
     
@@ -59,31 +68,25 @@ const ExpenseForm: React.FC = () => {
           <Input
             type='text'
             placeholder='Expense Name'
-            {...register('expenseName', {
-              required: true,
-            })}
+            {...register('expenseName')}
           />
           <Input
             type='number'
             placeholder='Amount'
-            {...register('amount', {
-              required: true,
-              valueAsNumber: true,
-            })}
+            {...register('amount')}
           />
           <Input
             type='text'
             placeholder='Category'
-            {...register('category', { required: true })}
+            {...register('category')}
           />
           <Textarea
             placeholder='Description'
             {...register('description')}
           />
           <Select
-            {...register('groupId', {
-              required: true,
-            })}>
+            {...register('groupId')}
+            onValueChange={handleGroupIdSelection}>
             <SelectTrigger>
               <SelectValue placeholder='Select a Group' />
             </SelectTrigger>
@@ -111,10 +114,7 @@ const ExpenseForm: React.FC = () => {
               }}
             />
           </label>
-          <Select
-            {...register('splitOption', {
-              required: true,
-            })}>
+          <Select {...register('splitOption')}>
             <SelectTrigger>
               <SelectValue placeholder='Select Split Option' />
             </SelectTrigger>
@@ -123,7 +123,7 @@ const ExpenseForm: React.FC = () => {
               <SelectItem value='custom'>Custom</SelectItem>
             </SelectContent>
           </Select>
-          <div>List of group members here</div>
+          <GroupMembers/>
           <label className='flex items-center'>
             <input
               type='checkbox'
