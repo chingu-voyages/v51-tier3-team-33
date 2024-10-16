@@ -27,7 +27,6 @@ export const POST = async(request: NextRequest) => {
     })
 
     for (const friend of friends) {
-      console.log(friend._id);
       await fetch(`${process.env.BASE_URL}/api/users/addFriend`, {
         method: "POST",
         headers: {
