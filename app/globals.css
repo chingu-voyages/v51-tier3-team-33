@@ -100,3 +100,14 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Hide up and down arrows in input type number */
+input[type='number'] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+input[type='number']::-webkit-inner-spin-button, 
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* Chrome, Safari, Edge */
+  margin: 0; /* Prevent margin */
+}
