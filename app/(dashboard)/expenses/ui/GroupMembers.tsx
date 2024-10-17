@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useUserContext } from '../../../context/UserContext';
 
 interface GroupMembersProps {
-    groupId?: string;
-    splitType?: string;
+  groupId?: string;
+  splitType?: string;
     amount: number;
+    onContributionsChange: (contributions: { member_id: string; amount: number }[]) => void;
 }
 
 interface User {
@@ -14,12 +15,15 @@ interface User {
   email: string;
 }
 
-export const GroupMembers: React.FC<GroupMembersProps> = ({ groupId, splitType, amount }) => {
+export const GroupMembers: React.FC<GroupMembersProps> = ({
+  groupId,
+  splitType,
+  amount,
+  onContributionsChange,
+}) => {
   const [members, setMembers] = useState<string[]>([]);
   const [membersDetails, setMembersDetails] = useState<User[]>([]);
-  const [customAmounts, setCustomAmounts] = useState<{ [key: string]: number }>(
-    {}
-  );
+  const [customAmounts, setCustomAmounts] = useState<{ [key: string]: number }>({});
   const { userFriends, userDetails } = useUserContext();
 
   const fetchSelectedGroup = async () => {
@@ -57,8 +61,26 @@ export const GroupMembers: React.FC<GroupMembersProps> = ({ groupId, splitType, 
   };
 
   const getEqualSplitAmount = () => {
-    return membersDetails.length ? (amount / membersDetails.length).toFixed(2) : '0.00';
+    return membersDetails.length
+      ? (amount / membersDetails.length).toFixed(2)
+      : '0.00';
   };
+ 
+    //pass contributions array to parent component
+    useEffect(() => {
+      const contributions = membersDetails.map((member) => ({
+        member_id: member._id,
+        amount:
+          customAmounts[member._id] ||
+          (splitType === 'equally' ? parseFloat(getEqualSplitAmount()) : 0),
+      }));
+      onContributionsChange(contributions);
+    }, [
+      customAmounts,
+      membersDetails,
+      splitType,
+      amount,
+    ]);
 
   return (
     <div>

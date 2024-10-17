@@ -13,7 +13,7 @@ export const GET = async(req: NextRequest): Promise<NextResponse> => {
     const { searchParams } = new URL(req.url);
     const groupId = searchParams.get('id');
 
-    console.log('params', searchParams)
+    //console.log('params', searchParams)
     if (groupId) {
       //find group by id
       const group = await Group.findById(groupId);
