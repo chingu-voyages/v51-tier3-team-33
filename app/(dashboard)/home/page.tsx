@@ -7,7 +7,8 @@ import ExpensesThisMonth from './ui/expensesThisMonth';
 import ExpensesGraph from './ui/expensesGraph';
 
 export default function Page() {  
-const { userDetails, userGroups, userFriends } = useUserContext();
+const { userDetails, userGroups, userFriends, userContribution } =
+  useUserContext();
 
   return (
     <div className='relative'>
@@ -34,7 +35,7 @@ const { userDetails, userGroups, userFriends } = useUserContext();
           <div>
             <p>
               Life time contributions:{' '}
-              <span className='font-bold block'>1400$</span>
+              <span className='font-bold block'>${userContribution}</span>
             </p>
           </div>
           <div className='flex flex-row gap-5'>

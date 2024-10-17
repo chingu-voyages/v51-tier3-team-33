@@ -24,6 +24,7 @@ interface UserContextType {
   userDetails: User;
   userGroups: Group[];
   userFriends: User[];
+  userContribution: number;
   setUserGroups: React.Dispatch<React.SetStateAction<Group[]>>;
   setUserFriends: React.Dispatch<React.SetStateAction<User[]>>;
 }
@@ -31,6 +32,10 @@ interface UserContextType {
 interface ApiResponse {
   success: boolean;
   groups: Group[];
+}
+
+interface Expense{
+
 }
 
 const defaultUser: User = {
@@ -50,6 +55,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   const [userDetails, setUserDetails] = useState<User>(defaultUser);
   const [userGroups, setUserGroups] = useState<Group[]>([]);
   const [userFriends, setUserFriends] = useState<User[]>([]);
+  const [userExpenses, setUserExpenses] = useState<Expense[]>([]);
+  const [userContribution, setUserContribution] = useState<number>(0)
+
     const sessionUserId = data?.user?.id;
     
     useEffect(() => {
@@ -106,9 +114,34 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
                 console.error('Error fetching groups:', error);
             }
         };
+      
+      const getSessionUserExpenses = async () => {
+        if (!sessionUserId || sessionUserId === '01') return;
+        try {
+          const response = await fetch(`/api/users/${sessionUserId}/viewExpenses`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch expenses.');
+          }
+          const { userExpenses } = await response.json();
+          console.log('expenses', userExpenses)
+          //get total contribution
+          if (Array.isArray(userExpenses)) {
+            const contribution = userExpenses.reduce((acc, currentItem) => {
+              return acc + (currentItem.contribution || 0);
+            }, 0)
+            setUserContribution(contribution);
+            //TO DO get all expenses and find user expenses among them
+            //setExpenses to expenses array
+          
+          }
+        } catch (error) {
+          console.error('Error fetching expenses:', error);
+        }
+      }
        
-        getSessionUserFriends();
-        getSessionUserGroups();
+      getSessionUserFriends();
+      getSessionUserGroups();
+      getSessionUserExpenses();
     }, [sessionUserId]);
 
     return (
@@ -119,6 +152,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           userFriends,
           setUserGroups,
           setUserFriends,
+          userContribution
         }}>
         {children}
       </UserContext.Provider>
