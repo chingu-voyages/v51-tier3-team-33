@@ -11,6 +11,7 @@ import { GroupMembers } from './GroupMembers';
 
 interface FormData {
   expenseName: string;
+  expenseDate: string;
   amount: number;
   category: string;
   description: string;
@@ -37,6 +38,13 @@ const ExpenseForm: React.FC = () => {
   const [selectedGroupId, setSelectedGroupId] = useState<string>();
   const [splitType, setSplitType] = useState<string>('equally');
   const [amount, setAmount] = useState<number>(0);
+  const [category, setCategory] = useState<string>('');
+
+  const expenseCategories = ['Restaurant', 'Groceries', 'Rent', 'Gas', 'Utility bills', 'Coffee', 'Movies', 'Clothing', 'Internet & Cable', 'Travel/Vacation', 'Laundry', 'Other'];
+
+  const handleCategorySelection = (category: string) => {
+    setCategory(category);
+  }
 
   const handleGroupIdSelection = (id: string) => {
     setSelectedGroupId(id)
@@ -53,16 +61,24 @@ type: string
     setAmount(value);
   };
 
+  //TO DO: fix this
     const handleCancel = () => {
-        reset();
+      reset();
+      setCategory('');
+      setSelectedGroupId('');
+      setGroupMembers([]);
+      setAmount(0);
     }
 
     const onSubmit: SubmitHandler<FormData> = async(data) => {
-         if (selectedFile) {
-           data.receipt = selectedFile; // Assign the selected file to the form data
+        if (selectedFile) {
+           data.receipt = selectedFile; 
          }
       if (selectedGroupId) {
         data.groupId = selectedGroupId;
+      }
+      if (category) {
+        data.category = category
       }
       
         console.log('formdata', data)
@@ -71,7 +87,7 @@ type: string
   //TO DO submit form data
   //if sum of split amounts is equal to total amount - success
   //if not equal - display message - the expense is not paid
-  
+
     return (
       <div className='p-4'>
         <h2 className='text-2xl font-semibold mb-4'>Add New Expense</h2>
@@ -84,16 +100,33 @@ type: string
             {...register('expenseName')}
           />
           <Input
+            type='date'
+            placeholder='Date'
+            {...register('expenseDate')}
+          />
+          <Input
             type='number'
             placeholder='Amount'
             {...register('amount')}
             onChange={amountChangeHandler}
           />
-          <Input
-            type='text'
-            placeholder='Category'
+
+          <Select
             {...register('category')}
-          />
+            onValueChange={handleCategorySelection}>
+            <SelectTrigger>
+              <SelectValue placeholder='Select a category' />
+            </SelectTrigger>
+            <SelectContent>
+              {expenseCategories.map((category) => (
+                <SelectItem
+                  key={category}
+                  value={category}>
+                  {category}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Textarea
             placeholder='Description'
             {...register('description')}

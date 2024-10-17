@@ -69,7 +69,7 @@ export const GroupMembers: React.FC<GroupMembersProps> = ({ groupId, splitType, 
             key={member._id}
             className='flex justify-between items-center bg-merino m-2 p-4 rounded'>
             <span>
-              {member.firstName} {member.lastName}
+              {member.firstName} {member.lastName} will pay
             </span>
             {splitType === 'equally' ? (
               <span>${getEqualSplitAmount()}</span>
