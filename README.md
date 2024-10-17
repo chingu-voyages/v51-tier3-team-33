@@ -42,17 +42,17 @@ WeSplit, an expense splitter app, is designed to simplify the process of dividin
 
 ### Environment Variables
 
-`MONGODB_URI`: Used to connect to WeSplit database.
-`AWS_S3_ACCESS_KEY_ID`: Used to authenticate API requests to Amazon S3.
-`AWS_S3_SECRET_ACCESS_KEY`: Used in conjunction with the access key to securely access AWS services.
-`AWS_S3_REGION`: The region our S3 bucket is within AWS.
-`AWS_S3_BUCKET_NAME`: The name of the bucket where the receipts are stored.
-`GOOGLE_CLIENT_ID`: Used for authenticating users via Google.
-`GOOGLE_CLIENT_SECRET`: Used in conjunction with the google client id to authenticate google users.
-`NEXTAUTH_SECRET`: A secret key used by NextAuth.js to encrypt session tokens and manage authentication.
-`NEXTAUTH_URL`: The URL where the application is hosted during development or production.
-`BASE_URL`: The base URL of the application (ex: localhost:3000 or deployed link). Used for dynamically establishing API calls.
-`RESEND_API_KEY`: API key for Resend, used to send email invites within the application.
+`MONGODB_URI`: Used to connect to WeSplit database.<br>
+`AWS_S3_ACCESS_KEY_ID`: Used to authenticate API requests to Amazon S3.<br>
+`AWS_S3_SECRET_ACCESS_KEY`: Used in conjunction with the access key to securely access AWS services.<br>
+`AWS_S3_REGION`: The region our S3 bucket is within AWS.<br>
+`AWS_S3_BUCKET_NAME`: The name of the bucket where the receipts are stored.<br>
+`GOOGLE_CLIENT_ID`: Used for authenticating users via Google.<br>
+`GOOGLE_CLIENT_SECRET`: Used in conjunction with the google client id to authenticate google users.<br>
+`NEXTAUTH_SECRET`: A secret key used by NextAuth.js to encrypt session tokens and manage authentication.<br>
+`NEXTAUTH_URL`: The URL where the application is hosted during development or production.<br>
+`BASE_URL`: The base URL of the application (ex: localhost:3000 or deployed link). Used for dynamically establishing API calls.<br>
+`RESEND_API_KEY`: API key for Resend, used to send email invites within the application.<br>
 `NEXT_PUBLIC_SHAREABLE_LINK`: The public URL that is shared with users, such as for login links and group invites. Should be the same as the BASE_URL.
 
 ### Key Documents:
