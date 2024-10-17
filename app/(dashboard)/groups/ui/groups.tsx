@@ -17,39 +17,41 @@ interface Group {
 }
 
 const Groups = () => {
-  const { userDetails, userGroups } = useUserContext();
+  const { userDetails, userGroups, setUserGroups } = useUserContext();
 
-console.log(userGroups)
+  console.log(userGroups);
   const { toast } = useToast();
   const router = useRouter();
 
-//TO DO TO DO implement deletion    
-    const handleDeleteGroup = async (groupId : string) => {
-      console.log('deleting', groupId);
-      try {
-        const response = await fetch(`api/groups/${groupId}/deleteGroup`, {
-          method: 'DELETE'
-        });
-        if (!response.ok) {
-          const errorData = await response.json();
-          console.error('Error deleting group:', errorData.error);
-          return;
-        }
-        const result = await response.json();
-        console.log(result.message);
-         toast({
-           description: 'Group successfully deleted',
-         });
-        
-      } catch (error) {
-        console.error('Error deleting group', error);
-        toast({
-          variant: 'destructive',
-          description: 'Failed to delete group',
-        });
+  //TO DO TO DO implement deletion
+  const handleDeleteGroup = async (groupId: string) => {
+    console.log('deleting', groupId);
+    try {
+      const response = await fetch(`api/groups/${groupId}/deleteGroup`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error deleting group:', errorData.error);
+        return;
       }
+      const result = await response.json();
+      console.log(result.message);
+      setUserGroups((prevGroups) =>
+        prevGroups.filter((group) => group._id !== groupId)
+      );
+      toast({
+        description: 'Group successfully deleted',
+      });
+    } catch (error) {
+      console.error('Error deleting group', error);
+      toast({
+        variant: 'destructive',
+        description: 'Failed to delete group',
+      });
     }
-  
+  };
+
   return (
     <div className='p-4'>
       <div className='flex items-center justify-between'>
@@ -69,8 +71,12 @@ console.log(userGroups)
           <li
             key={group._id}
             className='flex items-center justify-between mb-2 p-2 border rounded-md bg-pampas'>
-                <HoverView group={group} />
-            <Button variant='destructive' onClick={()=>handleDeleteGroup(group._id)}>Delete</Button>
+            <HoverView group={group} />
+            <Button
+              variant='destructive'
+              onClick={() => handleDeleteGroup(group._id)}>
+              Delete
+            </Button>
           </li>
         ))}
       </ul>
