@@ -28,6 +28,7 @@ WeSplit, an expense splitter app, is designed to simplify the process of dividin
 ### Tools used:
 - TypeScript
 - Nextjs
+- TailwindCSS
 - shadcn/ui - https://ui.shadcn.com/; 
 - Resend email API - https://resend.com/;
 - Mongodb
@@ -60,8 +61,8 @@ Throughout the project, we have several key documents to assist with planning, c
 
 Important Documents
 
-- [Minimal Viable Product](./docs/)
-- [Team Agreement](./docs/team_decision_log.md)
+- [Minimal Viable Product](https://docs.google.com/spreadsheets/d/1jWDDm1A9fSXRAO0Z2B1TQfkbpM_NytfniXWWn2NmSlU/edit?usp=sharing)
+- [Team Agreement](https://docs.google.com/document/d/1v8YNIgh0_Sig1qOPHAu0LiyJbrYvKbMQL-vlgvG91B4/edit?usp=sharing)
 
 ## Our Team
 
