@@ -1,74 +1,74 @@
-# voyage-tasks
+# Project Name: WeSplit
 
-Your project's `readme` is as important to success as your code. For
-this reason you should put as much care into its creation and maintenance
-as you would any other component of the application.
+## Project Description: 
 
-If you are unsure of what should go into the `readme` let this article,
-written by an experienced Chingu, be your starting point -
-[Keys to a well written README](https://tinyurl.com/yk3wubft).
+{LOGO}
 
-And before we go there's "one more thing"! Once you decide what to include
-in your `readme` feel free to replace the text we've provided here.
+WeSplit, an expense splitter app, is designed to simplify the process of dividing costs among a group of people. It provides a user friendly interface of providing the detailed information of the expenses, adding friends to the expenses, grouping the expenses for convenience of the user. Once the user inputs the expenses, and adds the friends linked to that particular expense, then the WeSplit app will calculate the individual’s share. 
 
-> Own it & Make it your Own!
+{SCREENSHOT}
 
-## Team Documents
+### Key Features of the WeSplit App:
+ - Expense Input: Allows users to input the expenses with details such as Description, amount, date and category.
+ - Member Management: Enables users to add the list of participants involved in the shared expenses.
+- Expense Allocation: Provides various methods for allocating expenses, including equal sharing, percentage based sharing and custom allocation.
+ - Payment TRacking: Tracks payments made by each participant, as per who owes whom and how much is the amount owed.
 
-You may find these helpful as you work together to organize your project.
+### Target Audience:
 
-- [Team Project Ideas](./docs/team_project_ideas.md)
-- [Team Decision Log](./docs/team_decision_log.md)
+- Groups of Friends: For managing shared expenses during trips, restaurants, other outings.
+- Housemates: Participants sharing rent, utility bills, groceries, and other household costs.
 
-Meeting Agenda templates (located in the `/docs` directory in this repo):
+### Technology Stack:	
+- Frontend: Nextjs to build dynamic user interfaces .
+- Backend: Nextjs to handle server-side logic and routing.
+- Database: MongoDB is used to store groups, users, expenses, etc.
+- Mobile compatibility: WeSplit app is designed to be compatible, responsive and accessible on both the desktop and mobile devices.
 
-- Meeting - Voyage Kickoff --> ./docs/meeting-voyage_kickoff.docx
-- Meeting - App Vision & Feature Planning --> ./docs/meeting-vision_and_feature_planning.docx
-- Meeting - Sprint Retrospective, Review, and Planning --> ./docs/meeting-sprint_retrospective_review_and_planning.docx
-- Meeting - Sprint Open Topic Session --> ./docs/meeting-sprint_open_topic_session.docx
+### Tools used:
+- TypeScript
+- Nextjs
+- shadcn/ui - https://ui.shadcn.com/; 
+- Resend email API - https://resend.com/;
+- Mongodb
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+### How to Run:
+
+1. To run WeSplit locally, In a code editor of your choice, open the terminal and enter `git clone https://github.com/chingu-voyages/v51-tier3-team-33.git`.
+2. Install all dependencies for the application by entering `pnpm install`. If you do not have pnpm installed, you can install it by entering `npm install pnpm` in the terminal.
+3. Create a `.env.local` file to add the required environment variables for the application to run successfully. Please ask the team for the keys before attempting to run the application, as it will not work without these.
+4. Run the application by entering `pnpm run dev` in the terminal.
+
+### Environment Variables
+
+`MONGODB_URI`: Used to connect to WeSplit database.
+`AWS_S3_ACCESS_KEY_ID`: Used to authenticate API requests to Amazon S3.
+`AWS_S3_SECRET_ACCESS_KEY`: Used in conjunction with the access key to securely access AWS services.
+`AWS_S3_REGION`: The region our S3 bucket is within AWS.
+`AWS_S3_BUCKET_NAME`: The name of the bucket where the receipts are stored.
+`GOOGLE_CLIENT_ID`: Used for authenticating users via Google.
+`GOOGLE_CLIENT_SECRET`: Used in conjunction with the google client id to authenticate google users.
+`NEXTAUTH_SECRET`: A secret key used by NextAuth.js to encrypt session tokens and manage authentication.
+`NEXTAUTH_URL`: The URL where the application is hosted during development or production.
+`BASE_URL`: The base URL of the application (ex: localhost:3000 or deployed link). Used for dynamically establishing API calls.
+`RESEND_API_KEY`: API key for Resend, used to send email invites within the application.
+`NEXT_PUBLIC_SHAREABLE_LINK`: The public URL that is shared with users, such as for login links and group invites. Should be the same as the BASE_URL.
+
+### Key Documents:
+Throughout the project, we have several key documents to assist with planning, communication, and organization. These documents can be found in the /docs directory.
+
+Important Documents
+
+- [Minimal Viable Product](./docs/)
+- [Team Agreement](./docs/team_decision_log.md)
 
 ## Our Team
 
-Everyone on your team should add their name along with a link to their GitHub
-& optionally their LinkedIn profiles below. Do this in Sprint #1 to validate
-your repo access and to practice PR'ing with your team _before_ you start
-coding!
+- Product Owner - Radhika G: [GitHub](https://github.com/goldilocks0164) / [LinkedIn](https://www.linkedin.com/in/radhika-godla-81335166)
+- Scrum Master - Lidia Prado Peñalver:  [LinkedIn](https://www.linkedin.com/in/lidiaprado)
+- Web Developer - Gary Smith: [GitHub](https://github.com/garysmith1933) / [LinkedIn](https://www.linkedin.com/in/garysmith1933/)
+- Web Developer - Olga Yudkin: [GitHub](https://github.com/cvtqx) / [LinkedIn](https://www.linkedin.com/in/olga-yudkin/)
 
-- José Bonilla: [GitHub](https://github.com/jy-bonilla) / [LinkedIn](https://linkedin.com/in/bonillacodes)
-- Olga Yudkin: [GitHub](https://github.com/cvtqx) / [LinkedIn](https://www.linkedin.com/in/olga-yudkin/)
-- Gary Smith: [GitHub](https://github.com/garysmith1933) / [LinkedIn](https://www.linkedin.com/in/garysmith1933/)
-- Jorge Alvarado: [GitHub](https://github.com/alvarado08) / [LinkedIn](https://www.linkedin.com/in/jorgep-alvarado/)
-- Radhika G: [GitHub](https://github.com/goldilocks0164) / [LinkedIn](https://www.linkedin.com/in/radhika-godla-81335166)
 
-- Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
