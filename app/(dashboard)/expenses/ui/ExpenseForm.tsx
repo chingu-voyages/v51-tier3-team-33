@@ -46,7 +46,14 @@ const ExpenseForm: React.FC = () => {
   const { userGroups } = useUserContext();
   //console.log(userGroups);
   const { toast } = useToast();
-  const { register, handleSubmit, reset } = useForm<ExpenseFormData>();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    clearErrors,
+    formState: { errors },
+  } = useForm<ExpenseFormData>();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [groupMembers, setGroupMembers] = useState<User[]>([]);
   const [selectedGroupId, setSelectedGroupId] = useState<string>();
@@ -77,6 +84,7 @@ const ExpenseForm: React.FC = () => {
   };
 
   const handleGroupIdSelection = (id: string) => {
+    setValue('groupId', id);
     setSelectedGroupId(id);
   };
 
@@ -87,6 +95,7 @@ const ExpenseForm: React.FC = () => {
   const amountChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
     setAmount(value);
+    clearErrors('amount');
   };
 
   const handleContributionsChange = (
@@ -138,10 +147,9 @@ const ExpenseForm: React.FC = () => {
 
       const result = await response.json();
       
-      console.log('result', result)
       if (result.success) {
         toast({
-          description: 'New group created successfully!.',
+          description: 'New expense created successfully!.',
         });
       }
     } catch (error) {
@@ -156,29 +164,54 @@ const ExpenseForm: React.FC = () => {
   };
 
   const onSubmit: SubmitHandler<ExpenseFormData> = async (data) => {
-    if (selectedFile) {
-      data.receipt = selectedFile;
+    //form validation, TO DO: toast is not displaying
+    if (
+      !data.expenseName ||
+      !data.amount ||
+      !data.expenseDate ||
+      !selectedGroupId
+    ) {
+      toast({
+        variant: 'destructive',
+        title: 'Validation Error',
+        description: 'Please fill in all required fields.',
+      });
+      
+      return;
     }
-    if (selectedGroupId) {
-      data.groupId = selectedGroupId;
-    }
-    if (category) {
-      data.category = category;
-    }
-    if (splitType) {
-      data.splitOption = splitType;
-    }
-    if (expenseIsPaid) {
-      data.isPaid = true;
-    }
-    if (contributions) {
-      data.contributions = contributions;
-    }
-    console.log('formdata', data);
+
+  if (selectedFile) {
+    data.receipt = selectedFile;
+  }
+  data.groupId = selectedGroupId;
+  data.category = category;
+  data.splitOption = splitType;
+  data.isPaid =
+    amount === contributions.reduce((total, c) => total + c.amount, 0);
+    data.contributions = contributions;
     await addNewExpenseToDatabase(data);
+    //THIS DOES NOT RESET EVERY FORM FIELD, NEEDS TO BE FIXED, I DON:T KNOW HOW
+    reset({
+      expenseName: '',
+      expenseDate: '',
+      amount: 0,
+      category: 'other',
+      description: '',
+      groupId: '',
+      receipt: undefined,
+      splitOption: 'equally',
+      isPaid: false,
+      contributions: [],
+    });
+    setCategory('other');
+    setSelectedGroupId('');
+    setSelectedFile(null);
+    setContributions([]);
+    setAmount(0);
+    setSplitType('equally');
   };
 
-  //TO DO submit form data
+  //TO DO
   //if sum of split amounts is equal to total amount - success
   //if not equal - display message - the expense is not paid
 
@@ -191,19 +224,28 @@ const ExpenseForm: React.FC = () => {
         <Input
           type='text'
           placeholder='Expense Name'
-          {...register('expenseName')}
+          {...register('expenseName', { required: true })}
         />
+        {errors.expenseName && (
+          <span className='text-red'>This field is required</span>
+        )}
         <Input
           type='date'
           placeholder='Date'
-          {...register('expenseDate')}
+          {...register('expenseDate', { required: true })}
         />
+        {errors.expenseDate && (
+          <span className='text-red'>This field is required</span>
+        )}
         <Input
           type='number'
           placeholder='Amount'
-          {...register('amount')}
+          {...register('amount', { required: true })}
           onChange={amountChangeHandler}
         />
+        {errors.amount && (
+          <span className='text-red'>This field is required</span>
+        )}
 
         <Select
           {...register('category')}
@@ -221,13 +263,17 @@ const ExpenseForm: React.FC = () => {
             ))}
           </SelectContent>
         </Select>
+
         <Textarea
           placeholder='Description'
           {...register('description')}
         />
         <Select
-          {...register('groupId')}
-          onValueChange={handleGroupIdSelection}>
+          {...register('groupId', { required: true })}
+          onValueChange={(value) => {
+            handleGroupIdSelection(value);
+            clearErrors('groupId')
+          }}>
           <SelectTrigger>
             <SelectValue placeholder='Select a Group' />
           </SelectTrigger>
@@ -241,6 +287,10 @@ const ExpenseForm: React.FC = () => {
             ))}
           </SelectContent>
         </Select>
+        {errors.groupId && (
+          <span className='text-red'>This field is required</span>
+        )}
+
         <label className='flex items-center'>
           Upload receipt
           <Input
