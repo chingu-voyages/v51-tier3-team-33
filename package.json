@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.654.0",
+    "@fortawesome/fontawesome-free": "^6.6.0",
     "@heroicons/react": "^2.1.5",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-dialog": "^1.1.1",
