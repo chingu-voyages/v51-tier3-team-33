@@ -8,18 +8,18 @@ const tags = Array.from({ length: 50 }).map(
 );
 
 export default function ExpensesThisMonth() {
-  const { userFriends } = useUserContext();
+  const { userExpenses } = useUserContext();
 
   return (
     <div className='md:flex-1'>
       <h2 className='mb-2'>Expenses this month:</h2>
       <ScrollArea className='h-64 w-full rounded-md border bg-muted'>
         <ul className='p-4'>
-          {tags.map((tag) => (
-            <li key={tag}>
+          {userExpenses.map((expense) => (
+            <li key={expense._id}>
               <p
                 className='text-sm'>
-                {tag}
+                {expense.name}
               </p>
               <Separator className='my-2' />
             </li>
