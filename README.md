@@ -7,11 +7,13 @@
 WeSplit, an expense splitter app, is designed to simplify the process of dividing costs among a group of people. It provides a user friendly interface of providing the detailed information of the expenses, adding friends to the expenses, grouping the expenses for convenience of the user. Once the user inputs the expenses, and adds the friends linked to that particular expense, then the WeSplit app will calculate the individual’s share. 
 
 Desktop view:
-![desktop screenshot](/public/images/desktop.png)
 
+
+<img src="/public/images/desktop.png" alt="mobile view" width="500"/>
 
 Mobile view:
-![desktop screenshot](/public/images/mobile.png){width=250}
+
+<img src="/public/images/mobile.png" alt="mobile view" width="200"/>
 
 ### Key Features of the WeSplit App:
  - Expense Input: Allows users to input the expenses with details such as Description, amount, date and category.
