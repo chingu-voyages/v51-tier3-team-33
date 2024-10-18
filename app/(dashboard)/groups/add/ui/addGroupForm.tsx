@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useUserContext } from '../../../../context/UserContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import AddNewMemberForm from './addNewMemberForm';
-import { useSession } from 'next-auth/react';
 import { useToast } from '@/hooks/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 
@@ -30,10 +30,11 @@ const NewGroupForm: React.FC = () => {
   const [members, setMembers] = useState<User[]>([]);
   const [groupType, setGroupType] = useState<string | null>(null);
 
-  const { data } = useSession();
-  const currentUserId = data?.user?.id;
+  const { userDetails, setUserGroups } = useUserContext();
+ 
+  const currentUserId = userDetails._id;
   const { toast } = useToast();
-
+   
   const addNewGroupToDatabase = async (data: NewGroupFormData) => {
     try {
       const response = await fetch('/api/groups', {
@@ -56,6 +57,7 @@ const NewGroupForm: React.FC = () => {
 
       const result = await response.json();
       if (result.success) {
+        setUserGroups(prevGroups => [ result.group, ...prevGroups]);
         toast({
           description: 'New group created successfully!.',
         });

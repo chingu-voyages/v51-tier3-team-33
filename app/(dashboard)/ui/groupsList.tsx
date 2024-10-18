@@ -9,7 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 
 const GroupsList: React.FC = () => {
   const router = useRouter();
-  const {  userGroups } = useUserContext();
+  const { userGroups } = useUserContext();
 
   return (
     <div className='flex flex-col items-center justify-between mt-10 ml-2'>
@@ -24,6 +24,11 @@ const GroupsList: React.FC = () => {
           Add Group
         </Button>
       </div>
+      {userGroups.length === 0 && (
+        <div className='mt-10 text-center'>
+          Create new group to start splitting your expenses!
+        </div>
+      )}
       {/* list */}
       <ScrollArea className='h-72 w-full hidden md:block '>
         <ul className='mt-5'>

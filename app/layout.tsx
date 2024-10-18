@@ -4,6 +4,7 @@ import "./globals.css";
 import OAuthSessionProvider from "./global-ui/next-auth-client/OAuthSessionProvider";
 import { UserProvider } from './context/UserContext'; 
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "./global-ui/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -17,9 +18,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "WeSplit | Expense tracker",
-  description:
-    "Developed by Chingu.io member: @Jaweki, @José, @Radhika, @Gary, @Olga, @Lidia",
+  title: 'WeSplit | Expense tracker',
+  description: 'Developed by Chingu.io members: @Gary, @Olga, @Radhika, @Lidia',
 };
 
 export default function RootLayout({
@@ -34,7 +34,8 @@ export default function RootLayout({
         <OAuthSessionProvider>
           <UserProvider>{children}</UserProvider>
         </OAuthSessionProvider>
-        <Toaster/>
+        <Toaster />
+        <Footer />
       </body>
     </html>
   );
