@@ -78,7 +78,7 @@ const ExpenseForm: React.FC = () => {
     'Laundry',
     'Other',
   ];
-
+  console.log(groupMembers);
   const handleCategorySelection = (category: string) => {
     setCategory(category);
   };
@@ -104,12 +104,12 @@ const ExpenseForm: React.FC = () => {
     setContributions(contributions);
   };
 
-  const totalContributions = contributions.reduce(
-    (total, contribution) => total + contribution.amount,
-    0
-  );
+  // const totalContributions = contributions.reduce(
+  //   (total, contribution) => total + contribution.amount,
+  //   0
+  // );
 
-  const expenseIsPaid = amount === totalContributions;
+  //const expenseIsPaid = amount === totalContributions;
 
   //TO DO: fix this
   const handleCancel = () => {
