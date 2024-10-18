@@ -24,7 +24,6 @@ interface Contribution {
 
 interface ExpenseFormData {
   expenseName: string;
-  expenseDate: string;
   amount: number;
   category: string;
   description: string;
@@ -168,7 +167,6 @@ const ExpenseForm: React.FC = () => {
     if (
       !data.expenseName ||
       !data.amount ||
-      !data.expenseDate ||
       !selectedGroupId
     ) {
       toast({
@@ -193,7 +191,6 @@ const ExpenseForm: React.FC = () => {
     //THIS DOES NOT RESET EVERY FORM FIELD, NEEDS TO BE FIXED, I DON:T KNOW HOW
     reset({
       expenseName: '',
-      expenseDate: '',
       amount: 0,
       category: 'other',
       description: '',
@@ -229,14 +226,14 @@ const ExpenseForm: React.FC = () => {
         {errors.expenseName && (
           <span className='text-red'>This field is required</span>
         )}
-        <Input
+        {/* <Input
           type='date'
           placeholder='Date'
           {...register('expenseDate', { required: true })}
         />
         {errors.expenseDate && (
           <span className='text-red'>This field is required</span>
-        )}
+        )} */}
         <Input
           type='number'
           placeholder='Amount'
