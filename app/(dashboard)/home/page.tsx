@@ -35,7 +35,7 @@ const { userDetails, userGroups, userFriends, userContribution } =
           <div>
             <p>
               Life time contributions:{' '}
-              <span className='font-bold block'>${userContribution}</span>
+              <span className='font-bold block'>${Math.round(userContribution)}</span>
             </p>
           </div>
           <div className='flex flex-row gap-5'>

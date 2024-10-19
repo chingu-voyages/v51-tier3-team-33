@@ -9,6 +9,11 @@ interface User {
   email: string;
   image?: string;
 }
+interface userExpense{
+  user_id: string;
+  expense_id: string;
+  contribution: number;
+}
 
 interface Group {
   _id: string;
@@ -28,6 +33,7 @@ interface Expense {
   description: string;
   group_id: string;
   name: string;
+  contribution: number;
 }
 
 interface UserContextType {
@@ -113,7 +119,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
                 group.members.includes(sessionUserId)
               )
             : [];
-        console.log('ferching groups', data.groups)
+        //console.log('ferching groups', data.groups)
           setUserGroups(sessionUserGroups);
         } else {
           console.error('Failed to fetch groups:', data);
@@ -133,13 +139,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           throw new Error('Failed to fetch expenses.');
         }
         const { userExpenses } = await response.json();
-        
+
+        //console.log('userExpenses', userExpenses)
         //get total contribution
         if (Array.isArray(userExpenses)) {
           const contribution = userExpenses.reduce((acc, currentItem) => {
             return acc + (currentItem.contribution || 0);
           }, 0);
-          setUserContribution(contribution);
+          setUserContribution(contribution);//lifetime contribution
 
           //make array of expense ids for easy search
           const userExpensesIds = userExpenses.map(expense => expense.expense_id);
@@ -151,7 +158,22 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           }
           const { expenses }: { expenses: Expense[] } = await result.json();
           
-          const userExpenseDetails: Expense[] = expenses.filter(expense => userExpensesIds.includes(expense._id))
+          const findUserContributionForCurrentExpense = (id: string) => {
+            if (Array.isArray(userExpenses)) {
+              const foundExpense = userExpenses
+                .find((expense) => expense.expense_id === id);
+              return foundExpense ? foundExpense.contribution : undefined;
+            }
+            }
+          ;
+
+          const userExpenseDetails: Expense[] = expenses.filter(expense => userExpensesIds.includes(expense._id)).map(expense => {
+            return {
+              ...expense,
+              contribution: findUserContributionForCurrentExpense(expense._id),
+            };
+          });
+
           setUserExpenses(userExpenseDetails);
         }
       } catch (error) {
