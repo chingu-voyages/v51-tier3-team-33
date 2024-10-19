@@ -9,13 +9,13 @@ const ExpensesDisplay = () => {
         useUserContext();
     
     //sort expenses from most recent 
-    userExpenses.sort((a, b) => {
+    const sortedExpenses = [...userExpenses].sort((a, b) => {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
    
   return (
     <div className='flex flex-wrap gap-4'>
-      {userExpenses.map((expense) => (
+      {sortedExpenses.map((expense) => (
         <Card
           key={expense._id}
           className='bg-pampas w-full sm:w-64 transition-transform transform hover:scale-105 hover:shadow'>
@@ -25,7 +25,9 @@ const ExpensesDisplay = () => {
           </CardHeader>
           <CardContent>
             <p>Description: {expense.description}</p>
-            <p className='font-medium text-lg text-purple'>You paid: ${expense.amount.toFixed(2)}</p>
+            <p className='font-medium text-lg text-purple'>
+              You paid: ${expense.amount.toFixed(2)}
+            </p>
             <p className='text-sm text-gray-400'>
               {format(new Date(expense.date), 'MMMM dd, yyyy')}
             </p>

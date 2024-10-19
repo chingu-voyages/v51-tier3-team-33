@@ -8,16 +8,16 @@ export default function RecentActivity() {
   const { userExpenses } = useUserContext();
 
   //sort expenses from most recent
-  userExpenses.sort((a, b) => {
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
-  });
+   const sortedExpenses = [...userExpenses].sort((a, b) => {
+     return new Date(b.date).getTime() - new Date(a.date).getTime();
+   });
   
   return (
     <div className='md:flex-1'>
       <h2 className='mb-2'>Recent activity:</h2>
       <ScrollArea className='h-64 w-full rounded-md border bg-muted'>
         <ul className='p-4'>
-          {userExpenses.map((expense) => (
+          {sortedExpenses.map((expense) => (
             <li key={expense._id}>
               <p className='text-sm'>
                 You paid{' '}
