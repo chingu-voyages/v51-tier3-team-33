@@ -75,20 +75,10 @@ const NewGroupForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<NewGroupFormData> = async (data) => {
     console.log('Form data:', data);
-    //Ensure current user is in the members array
-    const allGroupMembers: string[] = [
-      currentUserId || '',
-      ...members
-        .map((member) => member._id)
-        .filter((id): id is string => id !== undefined),
-    ];
 
     //console.log('AllGroupMembers', allGroupMembers);
 
-    await addNewGroupToDatabase({
-      ...data,
-      groupMembers: allGroupMembers,
-    });
+    await addNewGroupToDatabase(data);
 
     // Reset form and members after successful creation
     reset();

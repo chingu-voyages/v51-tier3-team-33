@@ -113,7 +113,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
                 group.members.includes(sessionUserId)
               )
             : [];
-
+        console.log('ferching groups', data.groups)
           setUserGroups(sessionUserGroups);
         } else {
           console.error('Failed to fetch groups:', data);
@@ -140,7 +140,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
             return acc + (currentItem.contribution || 0);
           }, 0);
           setUserContribution(contribution);
-console.log(userExpenses);
+
           //make array of expense ids for easy search
           const userExpensesIds = userExpenses.map(expense => expense.expense_id);
         
