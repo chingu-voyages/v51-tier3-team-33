@@ -42,8 +42,8 @@ interface User {
 }
 
 const ExpenseForm: React.FC = () => {
-  const { userGroups } = useUserContext();
-  //console.log(userGroups);
+  const { userDetails, userGroups, setUserExpenses, setUserContribution } = useUserContext();
+
   const { toast } = useToast();
   const {
     register,
@@ -62,7 +62,7 @@ const ExpenseForm: React.FC = () => {
   const [contributions, setContributions] = useState<
     { member_id: string; amount: number }[]
   >([]);
-
+  console.log(groupMembers);
   const expenseCategories = [
     'Restaurant',
     'Groceries',
@@ -77,7 +77,7 @@ const ExpenseForm: React.FC = () => {
     'Laundry',
     'Other',
   ];
-  console.log(groupMembers);
+
   const handleCategorySelection = (category: string) => {
     setCategory(category);
   };
@@ -102,13 +102,6 @@ const ExpenseForm: React.FC = () => {
   ) => {
     setContributions(contributions);
   };
-
-  // const totalContributions = contributions.reduce(
-  //   (total, contribution) => total + contribution.amount,
-  //   0
-  // );
-
-  //const expenseIsPaid = amount === totalContributions;
 
   //TO DO: fix this
   const handleCancel = () => {
@@ -145,8 +138,24 @@ const ExpenseForm: React.FC = () => {
       }
 
       const result = await response.json();
-      
+
       if (result.success) {
+        const sessionuserContribution = contributions.find(
+          (contribution) => contribution.member_id === userDetails._id
+        );
+
+        const newExpense = {
+          ...result.expense,
+          contribution: sessionuserContribution?.amount,
+        };
+
+        setUserExpenses((prevExpenses) => [newExpense, ...prevExpenses]);
+       if (sessionuserContribution) {
+         setUserContribution(
+           (prevContribution) =>
+             prevContribution + sessionuserContribution.amount
+         );
+       }
         toast({
           description: 'New expense created successfully!.',
         });
@@ -164,28 +173,24 @@ const ExpenseForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<ExpenseFormData> = async (data) => {
     //form validation, TO DO: toast is not displaying
-    if (
-      !data.expenseName ||
-      !data.amount ||
-      !selectedGroupId
-    ) {
+    if (!data.expenseName || !data.amount || !selectedGroupId) {
       toast({
         variant: 'destructive',
         title: 'Validation Error',
         description: 'Please fill in all required fields.',
       });
-      
+
       return;
     }
 
-  if (selectedFile) {
-    data.receipt = selectedFile;
-  }
-  data.groupId = selectedGroupId;
-  data.category = category;
-  data.splitOption = splitType;
-  data.isPaid =
-    amount === contributions.reduce((total, c) => total + c.amount, 0);
+    if (selectedFile) {
+      data.receipt = selectedFile;
+    }
+    data.groupId = selectedGroupId;
+    data.category = category;
+    data.splitOption = splitType;
+    data.isPaid =
+      amount === contributions.reduce((total, c) => total + c.amount, 0);
     data.contributions = contributions;
     await addNewExpenseToDatabase(data);
     //THIS DOES NOT RESET EVERY FORM FIELD, NEEDS TO BE FIXED, I DON:T KNOW HOW
@@ -226,14 +231,6 @@ const ExpenseForm: React.FC = () => {
         {errors.expenseName && (
           <span className='text-red'>This field is required</span>
         )}
-        {/* <Input
-          type='date'
-          placeholder='Date'
-          {...register('expenseDate', { required: true })}
-        />
-        {errors.expenseDate && (
-          <span className='text-red'>This field is required</span>
-        )} */}
         <Input
           type='number'
           placeholder='Amount'
@@ -269,7 +266,7 @@ const ExpenseForm: React.FC = () => {
           {...register('groupId', { required: true })}
           onValueChange={(value) => {
             handleGroupIdSelection(value);
-            clearErrors('groupId')
+            clearErrors('groupId');
           }}>
           <SelectTrigger>
             <SelectValue placeholder='Select a Group' />
