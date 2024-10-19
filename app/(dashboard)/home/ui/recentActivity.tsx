@@ -11,7 +11,7 @@ export default function RecentActivity() {
    const sortedExpenses = [...userExpenses].sort((a, b) => {
      return new Date(b.date).getTime() - new Date(a.date).getTime();
    });
-  
+  //console.log('sorted', sortedExpenses)
   return (
     <div className='md:flex-1'>
       <h2 className='mb-2'>Recent activity:</h2>
@@ -21,7 +21,9 @@ export default function RecentActivity() {
             <li key={expense._id}>
               <p className='text-sm'>
                 You paid{' '}
-                <span className='text-purple font-bold'>{expense.amount}</span>{' '}
+                <span className='text-purple font-bold'>
+                  {expense.contribution.toFixed(2)}
+                </span>{' '}
                 for {expense.name} on{' '}
                 <span className='text-sm text-gray-400'>
                   {format(new Date(expense.date), 'MMMM dd, yyyy')}

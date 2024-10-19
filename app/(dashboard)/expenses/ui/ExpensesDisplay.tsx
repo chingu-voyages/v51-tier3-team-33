@@ -18,7 +18,7 @@ const ExpensesDisplay = () => {
       {sortedExpenses.map((expense) => (
         <Card
           key={expense._id}
-          className='bg-pampas w-full sm:w-64 transition-transform transform hover:scale-105 hover:shadow'>
+          className='bg-pampas w-full sm:w-64 mt-8 transition-transform transform hover:scale-105 hover:shadow'>
           <CardHeader>
             <h3 className='text-lg font-bold'>{expense.name}</h3>
             <p className='text-gray-500'>{expense.category}</p>
@@ -26,10 +26,11 @@ const ExpensesDisplay = () => {
           <CardContent>
             <p>Description: {expense.description}</p>
             <p className='font-medium text-lg text-purple'>
-              You paid: ${expense.amount.toFixed(2)}
+              You paid: ${expense.contribution.toFixed(2)}
             </p>
+            <p className='font-bold'>Total bill was: ${expense.amount}</p>
             <p className='text-sm text-gray-400'>
-              {format(new Date(expense.date), 'MMMM dd, yyyy')}
+              Date of expense: {format(new Date(expense.date), 'MMMM dd, yyyy')}
             </p>
           </CardContent>
           <CardFooter>
